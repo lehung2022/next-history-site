@@ -1,3 +1,4 @@
+import React from "react"; //for testing purposes, cannot remove
 import Image from "next/image";
 
 export default function Home() {
