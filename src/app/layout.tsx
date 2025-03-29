@@ -43,7 +43,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           name="twitter:description"
           content="Explore historical timelines, famous generals, and significant events in history."
         />
-        <meta name="twitter:image" content="/other_images/japan-cities.jpg" />
+        <meta name="twitter:image" content="/other_images/rice-field.jpg" />
       </Head>
       <body className="font-sans antialiased min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1]">

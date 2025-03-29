@@ -4,8 +4,10 @@ import Link from "next/link";
 
 const Homepage = () => {
   return (
-    <div className="flex flex-col items-center min-h-screen text-white">
-      <h1 className="text-4xl md:text-5xl font-bold my-8">Chronicles of Valor</h1>
+    <div className="flex flex-col items-center text-white">
+      <h1 className="text-4xl md:text-5xl font-bold my-8">
+        Choose your destiny
+      </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
         <Link href="/dynasties" className="group">
           <div className="relative w-full h-48">
