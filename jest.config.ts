@@ -38,7 +38,7 @@ const config: Config = {
     "\\.(css|scss|sass)$": "identity-obj-proxy", // Bỏ qua CSS
   },
   // Thêm dòng này - PHẢI LÀM
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.tsx'],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
   // A list of reporter names that Jest uses when writing coverage reports
   // coverageReporters: [
   //   "json",
@@ -151,7 +151,9 @@ const config: Config = {
 
   // The test environment that will be used for testing
   testEnvironment: "jsdom",
-
+  testEnvironmentOptions: {
+    customExportConditions: ["react-jsx"], // Thêm dòng này
+  },
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
 
