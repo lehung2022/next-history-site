@@ -12,7 +12,10 @@ const config: Config = {
   transformIgnorePatterns: ["/node_modules/"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1", // Thêm /src để trỏ đúng thư mục
-    "\\.(css|scss|sass)$": "identity-obj-proxy",
+    "^\\./globals\\.css$": "<rootDir>/src/app/globals.css", // Ánh xạ đường dẫn tương đối
+    "^src/app/globals\\.css$": "identity-obj-proxy", // Ánh xạ đường dẫn đầy đủ
+    "\\.(css|scss|sass)$": "identity-obj-proxy", // Cho các tệp CSS khác
+    // Khúc này là sự phiền hà của thằng Jest khi chạy kiểm thử mà dính tới tệp globals.css 
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
   testEnvironment: "jsdom",

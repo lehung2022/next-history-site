@@ -9,19 +9,18 @@ export const metadata: Metadata = {
     "Explore historical timelines, famous generals, and significant events in history.",
 };
 
-interface RootLayoutProps {
+type RootLayoutProps = {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  const isDev = process.env.NODE_ENV === "development"; // Không cần .env, dùng mặc định
-  const baseUrl = isDev ? "http://localhost:3000" : "https://yourdomain.com"; // Tạm thời hardcode
+  const isDev = process.env.NODE_ENV === "development";
+  const baseUrl = isDev ? "http://localhost:3000" : "https://yourdomain.com";
 
   return (
     <html lang="en">
       <Head>
         <meta charSet="UTF-8" />
-        {/* <link rel="dns-prefetch" href="https://external-domain.com" /> Preparation for the future, if the loading is slow */}
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta
           name="robots"
@@ -33,9 +32,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           property="og:description"
           content="Explore historical timelines, famous generals, and significant events in history."
         />
-        <meta property="og:image" content="/other_images/japan-cities.jpg" />
+        <meta property="og:image" content="/other_images/rice-field.jpg" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={baseUrl} /> {/* Động hóa tạm thời */}
+        <meta property="og:url" content={baseUrl} />
         <meta property="og:site_name" content="Chronicles of Valor" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Chronicles of Valor" />
