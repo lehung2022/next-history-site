@@ -1,9 +1,10 @@
-import React from 'react'
+import React from "react"; //for testing purposes, cannot be removed
+import DynastyPage from "@/client-components/main/DynastyPage";
 
-const Dynasties = () => {
+export default function Dynasty() {
   return (
-    <div>Dynasties</div>
-  )
+    <>
+      <DynastyPage />
+    </>
+  );
 }
-
-export default Dynasties

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"; //for testing purposes, cannot be removed
 
 
 const Generals = () => {
