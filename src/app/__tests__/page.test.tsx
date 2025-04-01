@@ -1,15 +1,18 @@
 import { render, screen, within } from "@testing-library/react";
 import Homepage from "@/client-components/main/Home";
+import Home, { metadata } from "@/app/page"; // Import cả Home và metadata
 
 describe("Homepage Component", () => {
-  it('renders the main title "Choose your destiny"', () => {
+  it('renders the main title "Choose your destiny" with correct styling', () => {
     render(<Homepage />);
     const title = screen.getByText(/Choose your destiny/i);
     expect(title).toBeInTheDocument();
-    expect(title).toHaveClass("text-4xl md:text-5xl font-bold my-8");
+    expect(title).toHaveClass(
+      "text-4xl md:text-5xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2"
+    );
   });
 
-  it("renders the Dynasties link with image", () => {
+  it("renders the Dynasties link with image and styling", () => {
     render(<Homepage />);
     const dynastiesLink = screen.getByRole("link", { name: /Dynasties/i });
     expect(dynastiesLink).toBeInTheDocument();
@@ -19,7 +22,7 @@ describe("Homepage Component", () => {
       name: /Dynasties/i,
     }).parentElement;
     expect(imageContainer).toHaveClass(
-      "relative w-full h-48 border-2 border-white rounded-lg"
+      "relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-blue-700"
     );
     const dynastiesImage = within(dynastiesLink).getByAltText(/Dynasties/i);
     expect(dynastiesImage).toHaveAttribute(
@@ -28,11 +31,11 @@ describe("Homepage Component", () => {
     );
     const dynastiesText = within(dynastiesLink).getByText(/Dynasties/i);
     expect(dynastiesText).toHaveClass(
-      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
+      "mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1"
     );
   });
 
-  it("renders the Generals link with image", () => {
+  it("renders the Generals link with image and styling", () => {
     render(<Homepage />);
     const generalsLink = screen.getByRole("link", { name: /Generals/i });
     expect(generalsLink).toBeInTheDocument();
@@ -42,7 +45,7 @@ describe("Homepage Component", () => {
       name: /Generals/i,
     }).parentElement;
     expect(imageContainer).toHaveClass(
-      "relative w-full h-48 border-2 border-white rounded-lg"
+      "relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-gray-900"
     );
     const generalsImage = within(generalsLink).getByAltText(/Generals/i);
     expect(generalsImage).toHaveAttribute(
@@ -51,11 +54,11 @@ describe("Homepage Component", () => {
     );
     const generalsText = within(generalsLink).getByText(/Generals/i);
     expect(generalsText).toHaveClass(
-      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
+      "mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1"
     );
   });
 
-  it("renders the Timelines link with image", () => {
+  it("renders the Timelines link with image and styling", () => {
     render(<Homepage />);
     const timelinesLink = screen.getByRole("link", { name: /Timelines/i });
     expect(timelinesLink).toBeInTheDocument();
@@ -65,7 +68,7 @@ describe("Homepage Component", () => {
       name: /Timelines/i,
     }).parentElement;
     expect(imageContainer).toHaveClass(
-      "relative w-full h-48 border-2 border-white rounded-lg"
+      "relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-emerald-700"
     );
     const timelinesImage = within(timelinesLink).getByAltText(/Timelines/i);
     expect(timelinesImage).toHaveAttribute(
@@ -74,7 +77,7 @@ describe("Homepage Component", () => {
     );
     const timelinesText = within(timelinesLink).getByText(/Timelines/i);
     expect(timelinesText).toHaveClass(
-      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
+      "mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1"
     );
   });
 
@@ -83,17 +86,22 @@ describe("Homepage Component", () => {
     const grid = screen.getByText(/Dynasties/i).closest(".grid");
     expect(grid).toBeInTheDocument();
     expect(grid).toHaveClass(
-      "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4"
+      "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4"
     );
   });
 
   it("exports correct metadata from Home page", () => {
-    const { metadata } = require("@/app/page");
     expect(metadata).toBeDefined();
     expect(metadata).toEqual({
       title: "Home | Chronicles of Valor",
       description:
         "Explore historical timelines, famous generals, and significant events in history.",
     });
+  });
+
+  it("renders Homepage within Home wrapper", () => {
+    render(<Home />);
+    const title = screen.getByText(/Choose your destiny/i);
+    expect(title).toBeInTheDocument();
   });
 });
