@@ -1,5 +1,4 @@
 import { render, screen, within } from "@testing-library/react";
-import React from "react"; // Thêm dòng này
 import Homepage from "@/client-components/main/Home";
 
 describe("Homepage Component", () => {
@@ -15,11 +14,21 @@ describe("Homepage Component", () => {
     const dynastiesLink = screen.getByRole("link", { name: /Dynasties/i });
     expect(dynastiesLink).toBeInTheDocument();
     expect(dynastiesLink).toHaveAttribute("href", "/dynasties");
+    expect(dynastiesLink).toHaveClass("group");
+    const imageContainer = within(dynastiesLink).getByRole("img", {
+      name: /Dynasties/i,
+    }).parentElement;
+    expect(imageContainer).toHaveClass(
+      "relative w-full h-48 border-2 border-white rounded-lg"
+    );
     const dynastiesImage = within(dynastiesLink).getByAltText(/Dynasties/i);
-    expect(dynastiesImage).toBeInTheDocument();
     expect(dynastiesImage).toHaveAttribute(
       "src",
       "/other_images/lich_su_viet_nam.jpg"
+    );
+    const dynastiesText = within(dynastiesLink).getByText(/Dynasties/i);
+    expect(dynastiesText).toHaveClass(
+      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
     );
   });
 
@@ -28,12 +37,22 @@ describe("Homepage Component", () => {
     const generalsLink = screen.getByRole("link", { name: /Generals/i });
     expect(generalsLink).toBeInTheDocument();
     expect(generalsLink).toHaveAttribute("href", "/generals");
+    expect(generalsLink).toHaveClass("group");
+    const imageContainer = within(generalsLink).getByRole("img", {
+      name: /Generals/i,
+    }).parentElement;
+    expect(imageContainer).toHaveClass(
+      "relative w-full h-48 border-2 border-white rounded-lg"
+    );
     const generalsImage = within(generalsLink).getByAltText(/Generals/i);
-    expect(generalsImage).toBeInTheDocument();
     expect(generalsImage).toHaveAttribute(
       "src",
       "/other_images/lam_son_vs_minh_02.jpg"
-    ); // Sửa typo từ 'dynastiesImage' thành 'generalsImage'
+    );
+    const generalsText = within(generalsLink).getByText(/Generals/i);
+    expect(generalsText).toHaveClass(
+      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
+    );
   });
 
   it("renders the Timelines link with image", () => {
@@ -41,25 +60,40 @@ describe("Homepage Component", () => {
     const timelinesLink = screen.getByRole("link", { name: /Timelines/i });
     expect(timelinesLink).toBeInTheDocument();
     expect(timelinesLink).toHaveAttribute("href", "/timelines");
+    expect(timelinesLink).toHaveClass("group");
+    const imageContainer = within(timelinesLink).getByRole("img", {
+      name: /Timelines/i,
+    }).parentElement;
+    expect(imageContainer).toHaveClass(
+      "relative w-full h-48 border-2 border-white rounded-lg"
+    );
     const timelinesImage = within(timelinesLink).getByAltText(/Timelines/i);
-    expect(timelinesImage).toBeInTheDocument();
     expect(timelinesImage).toHaveAttribute(
       "src",
       "/other_images/Timeline-of-the-Far-Future-Snippet.jpg"
     );
+    const timelinesText = within(timelinesLink).getByText(/Timelines/i);
+    expect(timelinesText).toHaveClass(
+      "mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1"
+    );
   });
 
   it("renders grid layout correctly", () => {
-    const { container } = render(<Homepage />);
-    const grid = container.querySelector(".grid");
-    expect(grid).toHaveClass("grid-cols-1 md:grid-cols-3 gap-6");
+    render(<Homepage />);
+    const grid = screen.getByText(/Dynasties/i).closest(".grid");
+    expect(grid).toBeInTheDocument();
+    expect(grid).toHaveClass(
+      "grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4"
+    );
   });
 
-  it("applies correct Tailwind classes to links", () => {
-    render(<Homepage />);
-    const links = screen.getAllByRole("link");
-    links.forEach((link) => {
-      expect(link).toHaveClass("group");
+  it("exports correct metadata from Home page", () => {
+    const { metadata } = require("@/app/page");
+    expect(metadata).toBeDefined();
+    expect(metadata).toEqual({
+      title: "Home | Chronicles of Valor",
+      description:
+        "Explore historical timelines, famous generals, and significant events in history.",
     });
   });
 });

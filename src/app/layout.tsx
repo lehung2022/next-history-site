@@ -32,7 +32,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           property="og:description"
           content="Explore historical timelines, famous generals, and significant events in history."
         />
-        <meta property="og:image" content="/other_images/rice-field.jpg" />
+        <meta property="og:image" content="/other_images/vietnam-plateau.jpg" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={baseUrl} />
         <meta property="og:site_name" content="Chronicles of Valor" />
@@ -42,12 +42,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           name="twitter:description"
           content="Explore historical timelines, famous generals, and significant events in history."
         />
-        <meta name="twitter:image" content="/other_images/rice-field.jpg" />
+        <meta name="twitter:image" content="/other_images/vietnam-plateau.jpg" />
       </Head>
       <body className="font-sans antialiased min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1]">
           <Image
-            src="/other_images/rice-field.jpg"
+            src="/other_images/vietnam-plateau.jpg"
             alt="Background"
             fill
             sizes="100vw"

@@ -8,9 +8,9 @@ const Homepage = () => {
       <h1 className="text-4xl md:text-5xl font-bold my-8">
         Choose your destiny
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-6xl px-4 ">
         <Link href="/dynasties" className="group">
-          <div className="relative w-full h-48">
+          <div className="relative w-full h-48 border-2 border-white rounded-lg ">
             <Image
               src="/other_images/lich_su_viet_nam.jpg"
               alt="Dynasties"
@@ -20,10 +20,12 @@ const Homepage = () => {
               priority
             />
           </div>
-          <p className="mt-2 text-xl text-center">Dynasties</p>
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1">
+            Dynasties
+          </p>
         </Link>
         <Link href="/generals" className="group">
-          <div className="relative w-full h-48">
+          <div className="relative w-full h-48 border-2 border-white rounded-lg ">
             <Image
               src="/other_images/lam_son_vs_minh_02.jpg"
               alt="Generals"
@@ -32,10 +34,12 @@ const Homepage = () => {
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
-          <p className="mt-2 text-xl text-center">Generals</p>
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1">
+            Generals
+          </p>
         </Link>
         <Link href="/timelines" className="group">
-          <div className="relative w-full h-48">
+          <div className="relative w-full h-48 border-2 border-white rounded-lg ">
             <Image
               src="/other_images/Timeline-of-the-Far-Future-Snippet.jpg"
               alt="Timelines"
@@ -44,7 +48,9 @@ const Homepage = () => {
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
-          <p className="mt-2 text-xl text-center">Timelines</p>
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1">
+            Timelines
+          </p>
         </Link>
       </div>
     </div>

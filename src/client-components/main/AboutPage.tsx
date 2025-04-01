@@ -1,31 +1,20 @@
 import Link from "next/link";
 import { lazy, Suspense } from "react";
 import { domainLinks } from "@/client-components/sub/domain-links";
-import type { Metadata } from "next";
 
 const Information = lazy(() => import("@/client-components/sub/Info"));
 
-export const metadata: Metadata = {
-  title: "About | Chronicles of Valor",
-  description:
-    "Learn about the Chronicles of Valor project, its purpose, sources, and languages used.",
-};
-
 export default function AboutPage() {
   return (
-    <div className="flex flex-col items-center px-6 py-10 text-white animate-fadeIn">
-      <div>
-        <h1 className="text-4xl bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6">
-          About This Project
-        </h1>
-      </div>
-      <div>
-        <p className="border border-gray-950/50 rounded-lg text-base bg-gray-950/50 text-gray-300 max-w-3xl text-center mb-6">
-          This website is dedicated to exploring historical figures, countries,
-          and dynasties in feudal times. It provides historical insights,
-          images, and timelines for those interested in learning about the past.
-        </p>
-      </div>
+    <div className="flex flex-col items-center px-6 py-10 text-white">
+      <h1 className="text-4xl bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6">
+        About This Project
+      </h1>
+      <p className="border border-gray-950/50 rounded-lg text-base bg-gray-950/50 text-gray-300 max-w-3xl text-center mb-6">
+        This website is dedicated to exploring historical figures, countries,
+        and dynasties in feudal times. It provides historical insights, images,
+        and timelines for those interested in learning about the past.
+      </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
         <Suspense
           fallback={<div className="h-20 bg-gray-800 animate-pulse"></div>}
@@ -50,10 +39,11 @@ export default function AboutPage() {
           <li>🇹🇼 Hakka</li>
         </ul>
       </div>
-      <Link href="/">
-        <button className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-105">
-          ← Back
-        </button>
+      <Link
+        href="/"
+        className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-105"
+      >
+        ← Back
       </Link>
     </div>
   );
