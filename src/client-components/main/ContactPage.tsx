@@ -8,7 +8,7 @@ const ContactPage = () => {
         <ContactInfo
           name="陳元扞: Trần Nguyên Hãn"
           email="tran.nguyen.han1427@gmail.com"
-          twitter="https://x.com/spartan30096608"
+          twitter="https://x.com/musashi_300"
           skype="https://join.skype.com/invite/pMngRGworexZ"
           discord="https://discord.com/users/1344897403093909566"
         />
