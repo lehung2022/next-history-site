@@ -1,5 +1,5 @@
 import { render, screen, within } from "@testing-library/react";
-import Homepage from "@/client-components/main/Home";
+import Homepage from "@/client-components/main/HomePage";
 import Home, { metadata } from "@/app/page"; // Import cả Home và metadata
 
 describe("Homepage Component", () => {

@@ -1,5 +1,5 @@
 import React from "react"; //for testing purposes, cannot be removed
-import Homepage from "@/client-components/main/Home";
+import Homepage from "@/client-components/main/HomePage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

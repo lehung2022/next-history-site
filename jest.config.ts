@@ -16,6 +16,7 @@ const config: Config = {
     "^src/app/globals\\.css$": "identity-obj-proxy", // Ánh xạ đường dẫn đầy đủ
     "\\.(css|scss|sass)$": "identity-obj-proxy", // Cho các tệp CSS khác
     // Khúc này là sự phiền hà của thằng Jest khi chạy kiểm thử mà dính tới tệp globals.css 
+    "punycode": "<rootDir>/src/__mocks__/punycode.ts",
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.tsx"],
   testEnvironment: "jsdom",

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import Navbar from "@/client-components/main/Navbar";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 type RootLayoutProps = {
   children: React.ReactNode;
-}
+};
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const isDev = process.env.NODE_ENV === "development";
@@ -42,7 +43,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
           name="twitter:description"
           content="Explore historical timelines, famous generals, and significant events in history."
         />
-        <meta name="twitter:image" content="/other_images/vietnam-plateau.jpg" />
+        <meta
+          name="twitter:image"
+          content="/other_images/vietnam-plateau.jpg"
+        />
       </Head>
       <body className="font-sans antialiased min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1]">
@@ -56,6 +60,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             fetchPriority="low"
           />
         </div>
+        <Navbar />
         <main className="flex-grow mt-20">{children}</main>
       </body>
     </html>
