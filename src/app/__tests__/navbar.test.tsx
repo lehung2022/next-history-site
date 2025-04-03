@@ -1,63 +1,83 @@
-// src/client-components/__tests__/Navbar.test.tsx
 import { render, screen, fireEvent } from "@testing-library/react";
 import Navbar from "../../client-components/main/Navbar";
-import { useRouter } from "next/navigation";
 
 jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));
 
 describe("Navbar", () => {
-  let push: jest.Mock;
-
   beforeEach(() => {
-    push = jest.fn();
-    (useRouter as jest.Mock).mockReturnValue({ push });
+    jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
-  it("renders hamburger menu, logo, and search input", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("renders hamburger, logo, search inputs, and nav links", () => {
     render(<Navbar />);
     expect(screen.getByLabelText("Toggle menu")).toBeInTheDocument();
     expect(screen.getByText("Chronicles of Valor")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Search...")).toBeInTheDocument();
-    expect(screen.getByLabelText("Search")).toBeInTheDocument();
+    expect(screen.getAllByPlaceholderText("Search...")).toHaveLength(2);
+    expect(screen.getByText("About")).toBeInTheDocument();
+    expect(screen.getByText("Contact")).toBeInTheDocument();
+    expect(screen.getByText("Dynasties")).toBeInTheDocument();
+    expect(screen.getByText("Generals")).toBeInTheDocument();
+    expect(screen.getByText("Timelines")).toBeInTheDocument();
   });
 
   it("toggles menu on hamburger click", () => {
     render(<Navbar />);
     const menuButton = screen.getByLabelText("Toggle menu");
+    const menu = screen.getByText("About").parentElement?.parentElement;
+
+    expect(menu).toHaveClass("-translate-x-full");
     fireEvent.click(menuButton);
-    expect(screen.getByText("About").parentElement).toHaveClass(
-      "translate-x-0"
-    );
+    expect(menu).toHaveClass("translate-x-0");
     fireEvent.click(menuButton);
-    expect(screen.getByText("About").parentElement).toHaveClass(
-      "-translate-x-full"
-    );
+    expect(menu).toHaveClass("-translate-x-full");
   });
 
-  it("navigates to search_result on Enter key", () => {
+  it("shows overlay when menu is open and closes on click", () => {
     render(<Navbar />);
-    const input = screen.getByPlaceholderText("Search...");
-    fireEvent.change(input, { target: { value: "Nguyen" } });
+    const menuButton = screen.getByLabelText("Toggle menu");
+
+    expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
+    fireEvent.click(menuButton);
+    const overlay = screen.getByTestId("overlay");
+    expect(overlay).toBeInTheDocument();
+    expect(overlay).toHaveClass("bg-black/50");
+    fireEvent.click(overlay);
+    expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
+  });
+
+  it("calls console.log on search with Enter (desktop)", () => {
+    const consoleSpy = jest.spyOn(console, "log");
+    render(<Navbar />);
+    const input = screen.getAllByPlaceholderText("Search...")[1];
+    fireEvent.change(input, { target: { value: "test" } });
     fireEvent.keyDown(input, { key: "Enter" });
-    expect(push).toHaveBeenCalledWith("/search_result?q=Nguyen");
+    expect(consoleSpy).toHaveBeenCalledWith("Search:", "test");
+    expect(input).toHaveValue("");
   });
 
-  it("navigates to search_result on search button click", () => {
+  it("calls console.log on search with icon click (mobile)", () => {
+    const consoleSpy = jest.spyOn(console, "log");
     render(<Navbar />);
-    const input = screen.getByPlaceholderText("Search...");
-    const searchButton = screen.getByLabelText("Search");
-    fireEvent.change(input, { target: { value: "Nguyen" } });
-    fireEvent.click(searchButton);
-    expect(push).toHaveBeenCalledWith("/search_result?q=Nguyen");
+    const input = screen.getAllByPlaceholderText("Search...")[0];
+    const searchIcon = screen.getAllByLabelText("Search")[0];
+    fireEvent.change(input, { target: { value: "test" } });
+    fireEvent.click(searchIcon);
+    expect(consoleSpy).toHaveBeenCalledWith("Search:", "test");
+    expect(input).toHaveValue("");
   });
 
-  it("does not navigate when pressing non-Enter key", () => {
+  it("does not call console.log on non-Enter key", () => {
+    const consoleSpy = jest.spyOn(console, "log");
     render(<Navbar />);
-    const input = screen.getByPlaceholderText("Search...");
-    fireEvent.change(input, { target: { value: "Nguyen" } });
+    const input = screen.getAllByPlaceholderText("Search...")[0];
+    fireEvent.change(input, { target: { value: "test" } });
     fireEvent.keyDown(input, { key: "Space" });
-    expect(push).not.toHaveBeenCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 });

@@ -1,6 +1,5 @@
-// src/app/__tests__/Timeline.test.tsx
 import { render, screen } from "@testing-library/react";
-import TimelinePage from "../../client-components/main/TimelinePage"; // Trỏ đúng đến TimelinePage
+import TimelinePage from "../../client-components/main/TimelinePage";
 
 // Định nghĩa type cho props của Image
 type MockImageProps = {
@@ -8,13 +7,15 @@ type MockImageProps = {
   alt: string;
   fill?: boolean;
   priority?: boolean;
-  [key: string]: any;
+  className?: string; // Thêm các prop phổ biến
+  style?: React.CSSProperties;
 };
 
 // Mock next/image với kiểu
 jest.mock("next/image", () => ({
   __esModule: true,
   default: ({ src, alt, fill, priority, ...props }: MockImageProps) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}
@@ -25,7 +26,6 @@ jest.mock("next/image", () => ({
   ),
 }));
 
-// Mock next/navigation (cho Link)
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));

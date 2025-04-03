@@ -1,6 +1,9 @@
-export default {
-  decode: jest.fn((str: string) => str),
-  encode: jest.fn((str: string) => str),
-  toASCII: jest.fn((str: string) => str),
-  toUnicode: jest.fn((str: string) => str),
+import * as punycode from "punycode";
+const mockPunycode = {
+  decode: jest.fn(punycode.decode),
+  encode: jest.fn(punycode.encode),
+  toASCII: jest.fn(punycode.toASCII),
+  toUnicode: jest.fn(punycode.toUnicode),
 };
+export default mockPunycode;
+// Must fix it like this

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
+import Footer from "@/client-components/main/Footer";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         </div>
         <Navbar />
         <main className="flex-grow mt-20">{children}</main>
+        <Footer />
       </body>
     </html>
   );

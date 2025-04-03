@@ -7,7 +7,7 @@ const Homepage = () => {
       <h1 className="text-4xl md:text-5xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
         Choose your destiny
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-5xl px-4">
         <Link href="/dynasties" className="group">
           <div className="relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-blue-700">
             <Image
