@@ -43,6 +43,7 @@ const Navbar = () => {
       {/* Overlay cho Search trên Mobile */}
       {isSearchOpen && (
         <div
+          data-testid="search-overlay" // Thêm test ID
           className={`fixed top-0 left-0 w-full h-screen bg-gray-800/90 transform transition-transform duration-1000 ease-in-out z-20 md:hidden ${
             isSearchOpen ? "translate-x-0" : "translate-x-full"
           }`}

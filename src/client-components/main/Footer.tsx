@@ -1,54 +1,69 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { FaCalendarAlt } from "react-icons/fa";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { CiClock2 } from "react-icons/ci";
+import { FaEnvelope } from "react-icons/fa";
+import Link from "next/link";
 
 const Footer = () => {
-  const [currentTime, setCurrentTime] = useState<Date | null>(null);
-  const [event, setEvent] = useState<string>("Loading event...");
+  const [currentTime, setCurrentTime] = useState<Date | null>(null); // Start with null
 
   useEffect(() => {
-    setCurrentTime(new Date());
+    setCurrentTime(new Date()); // Set initial time after mount
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    const fetchEvent = async () => {
-      const today = currentTime
-        ? currentTime
-            .toLocaleDateString("en-US", { month: "2-digit", day: "2-digit" })
-            .split("/")
-            .join("-")
-        : "";
-      const fakeApiResponse =
-        today === "04-03"
-          ? "Lý Thường Kiệt đánh quân Tống (1075)"
-          : "No event today";
-      setEvent(fakeApiResponse);
-    };
+  if (!currentTime) {
+    return (
+      <footer className="bg-gray-800 text-white p-4 w-full">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <p>
+              ©{new Date().getFullYear()} Chronicles of Valor. All rights
+              reserved.
+            </p>
+          </div>
+          <div className="text-center">
+            <Link
+              href="/contact"
+              className="flex items-center gap-2 hover:text-blue-400"
+            >
+              <FaEnvelope size={20} />
+              <span>Contact Me</span>
+            </Link>
+          </div>
+          <div className="text-center md:text-right flex items-center justify-center md:justify-end gap-2">
+            <BsCalendar2DateFill size={20} />
+            <p>Loading...</p>
+          </div>
+          <div className="text-center md:text-right flex items-center justify-center md:justify-end gap-2">
+            <CiClock2 size={20} />
+            <p>Loading...</p>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
-    if (currentTime) fetchEvent();
-  }, [currentTime]);
-
-  const copyright = "©2025 Chronicles of Valor. All rights reserved.";
-  const formattedDate = currentTime
-    ? currentTime.toLocaleDateString()
-    : "Loading...";
-  const formattedTime = currentTime
-    ? currentTime.toLocaleTimeString()
-    : "Loading...";
+  const copyright = `©${currentTime.getFullYear()} Chronicles of Valor. All rights reserved.`;
+  const formattedDate = currentTime.toLocaleDateString();
+  const formattedTime = currentTime.toLocaleTimeString();
 
   return (
     <footer className="bg-gray-800 text-white p-4 w-full">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
           <p>{copyright}</p>
         </div>
-        <div className="text-center flex items-center justify-center gap-2">
-          <FaCalendarAlt size={20} />
-          <p className="truncate max-w-xs">{event}</p>
+        <div className="text-center">
+          <Link
+            href="/contact"
+            className="flex items-center gap-2 hover:text-blue-400"
+          >
+            <FaEnvelope size={20} />
+            <span>Contact Me</span>
+          </Link>
         </div>
         <div className="text-center md:text-right flex items-center justify-center md:justify-end gap-2">
           <BsCalendar2DateFill size={20} />

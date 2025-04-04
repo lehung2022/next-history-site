@@ -8,46 +8,46 @@ const Homepage = () => {
         Choose your destiny
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-5xl px-4">
-        <Link href="/dynasties" className="group">
-          <div className="relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-blue-700">
+        <Link href="/dynasties" className="group rounded-lg">
+          <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-blue-700 group-hover:bg-blue-700 group-active:bg-blue-700">
             <Image
               src="/other_images/lich_su_viet_nam.jpg"
               alt="Dynasties"
               fill
-              className="object-contain rounded-lg group-hover:scale-105 group-hover:opacity-75 transition-all duration-300"
+              className="object-contain rounded-lg group-hover:scale-102  overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
               priority
             />
           </div>
-          <p className="mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1">
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-blue-700 group-active:bg-blue-700 group-hover:text-black group-active:text-black transition-all duration-300">
             Dynasties
           </p>
         </Link>
-        <Link href="/generals" className="group">
-          <div className="relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-gray-900">
+        <Link href="/generals" className="group rounded-lg">
+          <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-gray-900 group-hover:bg-black group-active:bg-black">
             <Image
               src="/other_images/lam_son_vs_minh_02.jpg"
               alt="Generals"
               fill
-              className="object-contain rounded-lg group-hover:scale-105 group-hover:opacity-75 transition-all duration-300"
+              className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
-          <p className="mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1">
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-black group-active:bg-black group-hover:text-white group-active:text-white transition-all duration-300">
             Generals
           </p>
         </Link>
-        <Link href="/timelines" className="group">
-          <div className="relative w-full h-48 border-2 border-white group-hover:border-4 group-hover:border-blue-700 rounded-lg bg-emerald-700">
+        <Link href="/timelines" className="group rounded-lg">
+          <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-emerald-700 group-hover:bg-emerald-700 group-active:bg-emerald-700">
             <Image
               src="/other_images/Timeline-of-the-Far-Future-Snippet.jpg"
               alt="Timelines"
               fill
-              className="object-contain rounded-lg group-hover:scale-105 group-hover:opacity-75 transition-all duration-300"
+              className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
             />
           </div>
-          <p className="mt-2 text-xl text-center border-2 border-white group-hover:border-blue-700 bg-black/50 rounded-md px-2 py-1">
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-emerald-700 group-active:bg-emerald-700 group-hover:text-black group-active:text-black transition-all duration-300">
             Timelines
           </p>
         </Link>

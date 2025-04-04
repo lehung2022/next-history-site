@@ -14,8 +14,12 @@ describe("Navbar", () => {
     jest.restoreAllMocks();
   });
 
+  // Test hiện có giữ nguyên, thêm test mới dưới đây
   it("renders hamburger, logo, search inputs, and nav links", () => {
     render(<Navbar />);
+    const searchIconMobile = screen.getByLabelText("Open search");
+    fireEvent.click(searchIconMobile);
+
     expect(screen.getByLabelText("Toggle menu")).toBeInTheDocument();
     expect(screen.getByText("Chronicles of Valor")).toBeInTheDocument();
     expect(screen.getAllByPlaceholderText("Search...")).toHaveLength(2);
@@ -54,7 +58,7 @@ describe("Navbar", () => {
   it("calls console.log on search with Enter (desktop)", () => {
     const consoleSpy = jest.spyOn(console, "log");
     render(<Navbar />);
-    const input = screen.getAllByPlaceholderText("Search...")[1];
+    const input = screen.getAllByPlaceholderText("Search...")[0];
     fireEvent.change(input, { target: { value: "test" } });
     fireEvent.keyDown(input, { key: "Enter" });
     expect(consoleSpy).toHaveBeenCalledWith("Search:", "test");
@@ -64,7 +68,9 @@ describe("Navbar", () => {
   it("calls console.log on search with icon click (mobile)", () => {
     const consoleSpy = jest.spyOn(console, "log");
     render(<Navbar />);
-    const input = screen.getAllByPlaceholderText("Search...")[0];
+    const searchIconMobile = screen.getByLabelText("Open search");
+    fireEvent.click(searchIconMobile);
+    const input = screen.getAllByPlaceholderText("Search...")[1];
     const searchIcon = screen.getAllByLabelText("Search")[0];
     fireEvent.change(input, { target: { value: "test" } });
     fireEvent.click(searchIcon);
@@ -79,5 +85,24 @@ describe("Navbar", () => {
     fireEvent.change(input, { target: { value: "test" } });
     fireEvent.keyDown(input, { key: "Space" });
     expect(consoleSpy).not.toHaveBeenCalled();
+  });
+
+  // Test mới cho overlay Search Mobile
+  it("shows and hides search overlay on mobile", () => {
+    render(<Navbar />);
+    const searchIconMobile = screen.getByLabelText("Open search");
+
+    // Ban đầu overlay ẩn
+    expect(screen.queryByTestId("search-overlay")).not.toBeInTheDocument();
+
+    // Mở overlay
+    fireEvent.click(searchIconMobile);
+    const searchOverlay = screen.getByTestId("search-overlay");
+    expect(searchOverlay).toHaveClass("translate-x-0");
+
+    // Đóng overlay
+    const closeButton = screen.getByLabelText("Close search");
+    fireEvent.click(closeButton);
+    expect(screen.queryByTestId("search-overlay")).not.toBeInTheDocument();
   });
 });

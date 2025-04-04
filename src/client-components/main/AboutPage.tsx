@@ -30,7 +30,7 @@ export default function AboutPage() {
           />
         </Suspense>
       </div>
-      <div className="border border-gray-950/50 p-6 sm:p-8 rounded-lg bg-gray-950/50 mt-6 max-w-2xl w-full transition-transform hover:scale-105">
+      <div className="border border-gray-950/50 p-6 sm:p-8 rounded-lg bg-gray-950/50 mt-6 max-w-2xl w-full transition-transform hover:scale-102">
         <h2 className="text-2xl font-bold text-blue-50 mb-2">Languages Used</h2>
         <ul className="list-disc list-inside text-blue-300 mt-2">
           <li>🇻🇳 Vietnamese</li>
@@ -41,7 +41,7 @@ export default function AboutPage() {
       </div>
       <Link
         href="/"
-        className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-105"
+        className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-102"
       >
         ← Back
       </Link>
