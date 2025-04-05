@@ -7,9 +7,9 @@ const Information = lazy(() => import("@/client-components/sub/Info"));
 export default function AboutPage() {
   return (
     <div className="flex flex-col items-center px-6 py-10 text-white">
-      <h1 className="text-4xl bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6">
+      <div className="text-4xl bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6">
         About This Project
-      </h1>
+      </div>
       <p className="border border-gray-950/50 rounded-lg text-base bg-gray-950/50 text-gray-300 max-w-3xl text-center mb-6">
         This website is dedicated to exploring historical figures, countries,
         and dynasties in feudal times. It provides historical insights, images,

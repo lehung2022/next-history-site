@@ -7,13 +7,13 @@ const GeneralPage = () => {
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/"
-        className="text-white bg-transparent border border-gray-300 hover:bg-gray-950 active:bg-gray-950 mt-4 px-4 py-2 rounded-lg mb-4"
+        className="text-white bg-transparent border border-gray-300 hover:bg-gray-950 active:bg-gray-950 mt-2 px-4 py-2 rounded-lg mb-4"
       >
         ← Back
       </Link>
-      <h1 className="text-4xl md:text-5xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
+      <div className="text-3xl md:text-3xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4">
         Choose your general
-      </h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
         <Link href="/generals/tuong-quan-viet-nam" className="group rounded-lg">
           <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-amber-300 group-hover:bg-yellow-500 group-active:bg-yellow-500">

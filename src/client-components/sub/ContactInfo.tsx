@@ -18,7 +18,7 @@ const ContactInfo = ({
   return (
     <div className="flex flex-col items-center justify-center text-white w-full max-w-3xl mx-auto p-8 border border-gray-700 rounded-lg bg-slate-950/50 shadow-lg animate-slideDown">
       {/* Header */}
-      <h1 className="text-3xl font-bold mb-4 text-yellow-50">Contact Me</h1>
+      <div className="text-3xl font-bold mb-4 text-yellow-50">Contact Me</div>
 
       {/* Introduction */}
       <p className="text-lg text-gray-300 text-center mb-6">

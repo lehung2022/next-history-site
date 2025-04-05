@@ -4,9 +4,9 @@ import Link from "next/link";
 const Homepage = () => {
   return (
     <div className="flex flex-col items-center text-white">
-      <h1 className="text-4xl md:text-5xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
+      <div className="text-3xl md:text-4xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
         Choose your destiny
-      </h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-5xl px-4">
         <Link href="/dynasties" className="group rounded-lg">
           <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-blue-700 group-hover:bg-blue-700 group-active:bg-blue-700">

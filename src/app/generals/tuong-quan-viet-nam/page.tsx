@@ -1,5 +1,5 @@
 import React from "react"; //for testing purposes, cannot be removed
-import VietnameseGenerals from "@/server-components/generals/VietnameseGenerals"
+import VietnameseGenerals from "@/server-components/generals/VietnameseGenerals";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,13 +7,14 @@ export const metadata: Metadata = {
   description: "Explore the greatest generals of each country",
 };
 
-const VietnamGenerals = () => {
+export default async function VietnamGenerals({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
   return (
     <>
-      {/* do not remove this fragment. You'll never know when you might need it */}
-      <VietnameseGenerals />
+      <VietnameseGenerals searchParams={searchParams} />
     </>
   );
-};
-
-export default VietnamGenerals;
+}
