@@ -22,12 +22,12 @@ const VietnameseGenerals = async ({
       </Link>
       <div className="px-4">
         <div className="text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 max-w-2xl text-center">
-          TƯỚNG QUÂN VIỆT NAM
+          <h2>TƯỚNG QUÂN VIỆT NAM</h2>
+          <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2">
+            Danh sách các triều đại Việt Nam sẽ được tính chính thức từ nhà Ngô
+            đổ đi
+          </p>
         </div>
-        <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2 bg-black/50 border-2 border-white rounded-lg">
-          Danh sách các triều đại Việt Nam sẽ được tính chính thức từ nhà Ngô đổ
-          đi...
-        </p>
       </div>
       <DynastyTabs dynasties={dynasties} initialActiveTab={activeTab} />
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">

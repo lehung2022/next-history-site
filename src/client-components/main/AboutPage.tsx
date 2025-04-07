@@ -1,10 +1,14 @@
+"use client";
 import Link from "next/link";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import { domainLinks } from "@/client-components/sub/domain-links";
 
 const Information = lazy(() => import("@/client-components/sub/Info"));
 
 export default function AboutPage() {
+  const imageSources = useMemo(() => domainLinks.imageSources, []);
+  const articleSources = useMemo(() => domainLinks.articleSources, []);
+
   return (
     <div className="flex flex-col items-center px-6 py-10 text-white">
       <div className="text-4xl bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6">
@@ -19,15 +23,12 @@ export default function AboutPage() {
         <Suspense
           fallback={<div className="h-20 bg-gray-800 animate-pulse"></div>}
         >
-          <Information title="Image Sources" items={domainLinks.imageSources} />
+          <Information title="Image Sources" items={imageSources} />
         </Suspense>
         <Suspense
           fallback={<div className="h-20 bg-gray-800 animate-pulse"></div>}
         >
-          <Information
-            title="Article Sources"
-            items={domainLinks.articleSources}
-          />
+          <Information title="Article Sources" items={articleSources} />
         </Suspense>
       </div>
       <div className="border border-gray-950/50 p-6 sm:p-8 rounded-lg bg-gray-950/50 mt-6 max-w-2xl w-full transition-transform hover:scale-102">
@@ -41,7 +42,7 @@ export default function AboutPage() {
       </div>
       <Link
         href="/"
-        className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-102"
+        className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-700 active:bg-stone-700 transition-all duration-200 rounded-lg shadow-lg hover:scale-102 active:scale-102"
       >
         ← Back
       </Link>

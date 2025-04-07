@@ -1,6 +1,6 @@
 import { FaTwitter, FaSkype, FaEnvelope, FaDiscord } from "react-icons/fa";
 
-interface ContactInfoProps {
+type ContactInfoProps = {
   name: string;
   email: string;
   twitter: string;
