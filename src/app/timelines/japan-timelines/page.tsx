@@ -1,12 +1,19 @@
 import React from "react";
+import JapanTimelines from "@/server-components/timelines/JapanTimelines";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Japan Timelines | Chronicles of Valor",
+  description:
+    "Explore historical timelines, famous generals, and significant events in history.",
+};
 
-const Timelines = () => {
+const Japan = () => {
   return (
     <>
-      <div>Japan</div>
+      <JapanTimelines />
     </>
   );
 };
 
-export default Timelines;
+export default Japan;

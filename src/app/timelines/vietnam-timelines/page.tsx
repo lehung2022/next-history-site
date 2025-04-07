@@ -1,12 +1,19 @@
 import React from "react";
+import VietnamTimelines from "@/server-components/timelines/VietnamTimelines";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Vietnam Timelines | Chronicles of Valor",
+  description:
+    "Explore historical timelines, famous generals, and significant events in history.",
+};
 
-const Timelines = () => {
+const Vietnam = () => {
   return (
     <>
-      <div>Vietnam</div>
+      <VietnamTimelines />
     </>
   );
 };
 
-export default Timelines;
+export default Vietnam;

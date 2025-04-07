@@ -1,12 +1,19 @@
 import React from "react";
+import ChinaTimelines from "@/server-components/timelines/ChinaTimelines";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "China Timelines | Chronicles of Valor",
+  description:
+    "Explore historical timelines, famous generals, and significant events in history.",
+};
 
-const Timelines = () => {
+const China = () => {
   return (
     <>
-      <div>China</div>
+      <ChinaTimelines />
     </>
   );
 };
 
-export default Timelines;
+export default China;
