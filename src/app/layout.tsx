@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
 import Footer from "@/client-components/main/Footer";
+import ErrorBoundary from "@/client-components/main/ErrorBoundary";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -57,7 +58,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
             priority={true}
           />
         </div>
-        <Navbar />
+        <ErrorBoundary>
+          <Navbar />
+        </ErrorBoundary>
         <main className="flex-grow mt-20">{children}</main>
         <Footer />
       </body>

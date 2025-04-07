@@ -17,10 +17,10 @@ const Footer = () => {
   const year = new Date().getFullYear();
   const copyright = `©${year} Chronicles of Valor. All rights reserved.`;
   const formattedDate = currentTime
-    ? currentTime.toLocaleDateString()
+    ? currentTime.toLocaleDateString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
     : "Updating date...";
   const formattedTime = currentTime
-    ? currentTime.toLocaleTimeString()
+    ? currentTime.toLocaleTimeString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
     : "Updating time...";
 
   return (
