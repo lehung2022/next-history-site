@@ -56,6 +56,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             sizes="100vw"
             className="object-contain"
             priority={true}
+            quality={70}
           />
         </div>
         <ErrorBoundary>

@@ -23,6 +23,7 @@ const Timeline = () => {
               fill
               className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={70}
               priority
             />
           </div>
@@ -38,6 +39,7 @@ const Timeline = () => {
               fill
               className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={70}
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-orange-400 group-active:bg-orange-400 group-hover:text-black group-active:text-black transition-all duration-300">
@@ -52,6 +54,7 @@ const Timeline = () => {
               fill
               className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
+              quality={70}
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-red-900 group-active:bg-red-900 group-hover:text-black group-active:text-black transition-all duration-300">

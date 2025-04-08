@@ -42,7 +42,7 @@ const GeneralBio = async ({
       >
         ← Back to Vietnamese generals
       </Link>
-      <div className="text-4xl md:text-5xl font-bold my-8 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
+      <div className="text-4xl md:text-5xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
         {general.name}
       </div>
       <div className="w-full max-w-5xl px-4">
@@ -54,6 +54,7 @@ const GeneralBio = async ({
               fill
               className="object-contain rounded-lg"
               sizes="(max-width: 768px) 100vw, 50vw"
+              quality={60}
             />
           </div>
           <div className="mt-6 text-lg text-center whitespace-pre-line border-2 border-white bg-black/50 rounded-lg p-4">
