@@ -38,7 +38,7 @@ const VietnameseGenerals = async ({
               key={general.id}
               href={`/generals/tuong-quan-viet-nam/bio?general=${toSlug(
                 general.name
-              )}`}
+              )}&dynasty=${activeTab}`}
               className="group rounded-lg"
             >
               <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg overflow-hidden p-2 bg-amber-300 group-hover:bg-amber-500 group-active:bg-amber-500">
