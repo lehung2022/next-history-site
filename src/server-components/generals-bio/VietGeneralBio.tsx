@@ -3,7 +3,7 @@ import Image from "next/image";
 import { generals } from "@/types/vietGenerals";
 import { toSlug } from "@/types/vietDynasties";
 
-const GeneralBio = async ({
+const VietGeneralBio = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | undefined }>;
@@ -83,4 +83,4 @@ const GeneralBio = async ({
   );
 };
 
-export default GeneralBio;
+export default VietGeneralBio;

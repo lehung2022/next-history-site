@@ -5,7 +5,7 @@ export const generals = [
     dynastyId: "ngo",
     name: "Dương Tam Kha",
     image: "/vietnamese_generals/duong-tam-kha-02.png",
-    bio: "tức Dương Bình Vương (楊平王), là một vị vua Việt Nam, trị vì từ 944 đến 950...",
+    bio: "tức Dương Bình Vương (楊平王), là một vị vua Việt Nam, trị vì từ 944 đến 950, xen giữa triều đại nhà Ngô trong lịch sử Việt Nam. Với thân phận là anh/em vợ của Ngô Quyền và là con trai của Tiết độ sứ Dương Đình Nghệ, ông đã tạo nên một thế lực đủ mạnh để cướp ngôi nhà Ngô, tự lập triều đại riêng của mình trong vòng 6 năm, cho đến khi bị Hậu Ngô Vương phế truất.",
   },
   {
     id: "dinh-bo-linh-001",

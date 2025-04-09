@@ -1,5 +1,5 @@
 import React from "react";
-import GeneralBio from "@/server-components/generals-bio/GeneralBio";
+import VietGeneralBio from "@/server-components/generals-bio/VietGeneralBio";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ const Bio = ({
 }) => {
   return (
     <>
-      <GeneralBio searchParams={searchParams} />
+      <VietGeneralBio searchParams={searchParams} />
     </>
   );
 };
