@@ -1,18 +1,19 @@
-import { FaTwitter, FaSkype, FaEnvelope, FaDiscord } from "react-icons/fa";
+import { FaTwitter, FaEnvelope, FaDiscord } from "react-icons/fa";
+import { PiMicrosoftTeamsLogoFill } from "react-icons/pi";
 
 type ContactInfoProps = {
   name: string;
   email: string;
   twitter: string;
-  skype: string;
+  team: string;
   discord: string;
-}
+};
 
 const ContactInfo = ({
   name,
   email,
   twitter,
-  skype,
+  team,
   discord,
 }: ContactInfoProps) => {
   return (
@@ -50,16 +51,16 @@ const ContactInfo = ({
           </a>
         </div>
 
-        {/* Skype */}
+        {/* Team */}
         <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50">
-          <FaSkype className="text-blue-300 text-3xl" />
+          <PiMicrosoftTeamsLogoFill className="text-blue-300 text-3xl" />
           <a
-            href={skype}
+            href={team}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:underline text-gray-300"
           >
-            Skype
+            Team
           </a>
         </div>
         {/* Discord */}
