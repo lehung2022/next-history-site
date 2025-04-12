@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 //These things will be called from API. It will come as a list of generals
 
 const ChineseGenerals = () => {
@@ -12,6 +13,41 @@ const ChineseGenerals = () => {
       >
         ← Back to generals
       </Link>
+      <div className="px-4">
+        <div className="text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 max-w-2xl text-center">
+          <h2>Tướng quân Trung Quốc</h2>
+          <div className="my-4 flex justify-center">
+            <div className="relative w-full max-w-md aspect-[1/1] border-2 border-white rounded-lg ">
+              <Image
+                src="https://i.pinimg.com/736x/af/3d/cf/af3dcf520930810278aa05883765a7d7.jpg"
+                alt="Sun Jian"
+                fill
+                className="object-contain rounded-lg transition-all duration-300"
+                sizes="(max-width: 768px) 100vw, 448px"
+                quality={70}
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+              />
+            </div>
+          </div>
+          <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2">
+            Tôn Kiên (155–193), tự Văn Đài, người huyện Phú Xuân, quận Ngô (nay
+            là huyện Phú Dương, thành phố Hàng Châu, tỉnh Chiết Giang), là một
+            tướng quân và lãnh chúa thời cuối Đông Hán, giữ chức Thái thú Trường
+            Sa, người đặt nền móng cho chính quyền Đông Ngô. ...
+            <br />
+            Nguồn:{" "}
+            <a
+              href="https://vi.wikipedia.org/wiki/T%C3%B4n_Ki%C3%AAn"
+              className="text-blue-400 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia - Tôn Kiên
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

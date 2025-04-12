@@ -12,6 +12,7 @@ const JapanDynasty = () => {
       >
         ← Back to dynasties
       </Link>
+      <h1>I will list from Oda Nobunaga era</h1>
     </div>
   );
 };

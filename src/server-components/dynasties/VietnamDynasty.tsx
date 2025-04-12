@@ -12,6 +12,7 @@ const VietnamDynasty = () => {
       >
         ← Back to dynasties
       </Link>
+      <h1>The dynasties in Vietnam will be listed from Ngo dynasty</h1>
     </div>
   );
 };

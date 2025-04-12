@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-//These things will be called from API. It will come as a list of dynasties
 
 const ChinaDynasty = () => {
   return (
-    // This is for server component, don't mistake it for client component
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/dynasties/"
