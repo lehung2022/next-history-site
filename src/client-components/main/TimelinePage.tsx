@@ -58,7 +58,7 @@ const Timeline = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-red-900 group-active:bg-red-900 group-hover:text-black group-active:text-black transition-all duration-300">
-            China (221 BC - 1911)
+            China (From 220 to 280 AD, 60 years in total | Then from )
           </p>
         </Link>
       </div>
