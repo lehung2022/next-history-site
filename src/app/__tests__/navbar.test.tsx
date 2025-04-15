@@ -36,13 +36,28 @@ describe("Navbar", () => {
     });
   });
 
-  // Test Desktop và Empty Query để tham khảo
   it("submits search query on Enter key (Desktop)", async () => {
     render(<Navbar />);
     const inputDesktop = screen.getAllByPlaceholderText("Search...")[0];
 
     await user.type(inputDesktop, "Trần");
     await user.keyboard("{Enter}");
+
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith("/search?query=Tr%E1%BA%A7n");
+      expect(inputDesktop).toHaveValue("");
+    });
+  });
+
+  it("submits search query on search icon click (Desktop)", async () => {
+    render(<Navbar />);
+    const inputDesktop = screen.getAllByPlaceholderText("Search...")[0];
+    const searchIconDesktop = screen.getByLabelText("Search");
+
+    await user.type(inputDesktop, "Trần");
+    expect(inputDesktop).toHaveValue("Trần");
+
+    await user.click(searchIconDesktop);
 
     await waitFor(() => {
       expect(mockPush).toHaveBeenCalledWith("/search?query=Tr%E1%BA%A7n");
@@ -58,5 +73,41 @@ describe("Navbar", () => {
     await user.keyboard("{Enter}");
 
     expect(mockPush).not.toHaveBeenCalled();
+  });
+
+  it("toggles hamburger menu and navigates to a link", async () => {
+    render(<Navbar />);
+    const menuButton = screen.getByLabelText("Toggle menu");
+
+    // Mở menu
+    await user.click(menuButton);
+    expect(screen.getByTestId("overlay")).toBeInTheDocument();
+
+    // Kiểm tra link "Contact"
+    const contactLink = screen.getByText("Contact");
+    expect(contactLink).toHaveAttribute("href", "/contact");
+
+    // Click link và kiểm tra menu đóng
+    await user.click(contactLink);
+    await waitFor(() => {
+      expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
+    });
+  });
+
+  it("closes hamburger menu on overlay click", async () => {
+    render(<Navbar />);
+    const menuButton = screen.getByLabelText("Toggle menu");
+
+    // Mở menu
+    await user.click(menuButton);
+    expect(screen.getByTestId("overlay")).toBeInTheDocument();
+
+    // Click overlay để đóng
+    const overlay = screen.getByTestId("overlay");
+    await user.click(overlay);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
+    });
   });
 });
