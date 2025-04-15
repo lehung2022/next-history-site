@@ -12,6 +12,9 @@ const VietnamTimelines = () => {
       >
         ← Back to Timelines
       </Link>
+      <div className="text-4xl text-gray-100 items-center">
+        This is for Viet nam times.
+      </div>
     </div>
   );
 };

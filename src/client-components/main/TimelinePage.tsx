@@ -28,7 +28,7 @@ const Timeline = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-yellow-400 group-active:bg-yellow-400 group-hover:text-black group-active:text-black transition-all duration-300">
-            Vietnam (938 - 1945)
+            Vietnam (938 - 1945, always involved with China)
           </p>
         </Link>
         <Link href="/timelines/japan-timelines" className="group rounded-lg">
@@ -43,7 +43,7 @@ const Timeline = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-orange-400 group-active:bg-orange-400 group-hover:text-black group-active:text-black transition-all duration-300">
-            Japan (1467 - 1868)
+            Japan (1467 - 1868, a stand alone island)
           </p>
         </Link>
         <Link href="/timelines/china-timelines" className="group rounded-lg">
@@ -58,7 +58,7 @@ const Timeline = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-red-900 group-active:bg-red-900 group-hover:text-black group-active:text-black transition-all duration-300">
-            China (From 220 to 280 AD, 60 years in total | Then from )
+            China (From 220 to 280 AD and involve with Vietnam )
           </p>
         </Link>
       </div>
