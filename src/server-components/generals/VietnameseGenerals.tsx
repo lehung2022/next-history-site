@@ -1,7 +1,46 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getGenerals } from "@/types/vietGenerals";
-import { toSlug } from "@/types/vietDynasties";
+import { getGenerals, toSlug } from "@/types/vietGenerals";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiChevronsLeft,
+  FiChevronsRight,
+} from "react-icons/fi";
+
+// Hàm tính danh sách trang để hiển thị (VD: 1 ... 6 ... 12)
+const getPageRange = (
+  currentPage: number,
+  totalPages: number
+): (number | string)[] => {
+  const range: (number | string)[] = [];
+
+  // Trường hợp ít trang
+  if (totalPages <= 3) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  // Thêm trang 1
+  range.push(1);
+
+  // Thêm ... và trang hiện tại
+  if (currentPage > 2) {
+    range.push("...");
+  }
+  if (currentPage !== 1 && currentPage !== totalPages) {
+    range.push(currentPage);
+  }
+  if (currentPage < totalPages - 1) {
+    range.push("...");
+  }
+
+  // Thêm trang cuối
+  if (totalPages > 1) {
+    range.push(totalPages);
+  }
+
+  return range;
+};
 
 const VietnameseGenerals = async ({
   searchParams,
@@ -19,6 +58,8 @@ const VietnameseGenerals = async ({
     Math.min(totalPages, parseInt(resolvedSearchParams.page || "1", 10))
   ); // Giới hạn 1 <= page <= totalPages
   const { generals } = await getGenerals(page, limit); // Lấy dữ liệu trang hiện tại
+
+  const pageRange = getPageRange(page, totalPages);
 
   return (
     <div className="flex flex-col items-center text-gray-200">
@@ -61,40 +102,70 @@ const VietnameseGenerals = async ({
       </div>
       <div className="flex gap-2 mt-6">
         {page <= 1 ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed">
-            Prev
+          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronsLeft className="mr-1" /> Go to first
+          </span>
+        ) : (
+          <Link
+            href={`/generals/tuong-quan-viet-nam?page=1`}
+            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+          >
+            <FiChevronsLeft className="mr-1" /> Go to first
+          </Link>
+        )}
+        {page <= 1 ? (
+          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronLeft className="mr-1" /> Prev
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=${page - 1}`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black"
+            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            Prev
+            <FiChevronLeft className="mr-1" /> Prev
           </Link>
         )}
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-          <Link
-            key={p}
-            href={`/generals/tuong-quan-viet-nam?page=${p}`}
-            className={`px-4 py-2 rounded-lg border-2 border-white bg-black/50 ${
-              p === page
-                ? "bg-amber-500 text-black"
-                : "hover:bg-amber-500 hover:text-black"
-            }`}
-          >
-            {p}
-          </Link>
-        ))}
+        {pageRange.map((p, index) =>
+          p === "..." ? (
+            <span key={`ellipsis-${index}`} className="px-4 py-2">
+              ...
+            </span>
+          ) : (
+            <Link
+              key={`page-${p}-${index}`}
+              href={`/generals/tuong-quan-viet-nam?page=${p}`}
+              className={`px-4 py-2 rounded-lg border-2 border-white bg-black/50 ${
+                p === page
+                  ? "bg-amber-500 text-emerald-200"
+                  : "hover:bg-amber-500 text-emerald-200"
+              }`}
+            >
+              {p}
+            </Link>
+          )
+        )}
         {page >= totalPages ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed">
-            Next
+          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronRight className="mr-1" /> Next
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=${page + 1}`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black"
+            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            Next
+            <FiChevronRight className="mr-1" /> Next
+          </Link>
+        )}
+        {page >= totalPages ? (
+          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronsRight className="mr-1" /> Go to last
+          </span>
+        ) : (
+          <Link
+            href={`/generals/tuong-quan-viet-nam?page=${totalPages}`}
+            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+          >
+            <FiChevronsRight className="mr-1" /> Go to last
           </Link>
         )}
       </div>

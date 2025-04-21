@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { generals } from "@/types/vietGenerals";
-import { toSlug } from "@/types/vietDynasties";
+import { toSlug } from "@/types/vietGenerals";
 
 const VietGeneralBio = async ({ params }: { params: { slug: string } }) => {
   // Giả lập fetch từ Firebase, sau này thay bằng:
