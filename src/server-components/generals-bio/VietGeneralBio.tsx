@@ -3,19 +3,12 @@ import Image from "next/image";
 import { generals } from "@/types/vietGenerals";
 import { toSlug } from "@/types/vietDynasties";
 
-const VietGeneralBio = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
-  const resolvedSearchParams = await searchParams;
-  const { general: generalParam, dynasty } = resolvedSearchParams;
+const VietGeneralBio = async ({ params }: { params: { slug: string } }) => {
+  // Giả lập fetch từ Firebase, sau này thay bằng:
+  // const querySnapshot = await firebase.firestore().collection('generals').where('slug', '==', params.slug).get();
+  const general = generals.find((g) => toSlug(g.name) === params.slug);
 
-  const general = generals.find(
-    (g) => generalParam && toSlug(g.name) === generalParam
-  );
-
-  if (!generalParam || !general) {
+  if (!general) {
     return (
       <div className="flex flex-col items-center text-gray-200 p-6">
         <div className="text-4xl md:text-5xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
@@ -25,9 +18,7 @@ const VietGeneralBio = async ({
           Please select a general from the list.
         </p>
         <Link
-          href={`/generals/tuong-quan-viet-nam${
-            dynasty ? `?dynasty=${dynasty}` : ""
-          }`}
+          href="/generals/tuong-quan-viet-nam"
           className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-4 px-4 py-2 rounded-lg mb-4"
         >
           ← Back to Vietnamese generals
@@ -39,9 +30,7 @@ const VietGeneralBio = async ({
   return (
     <div className="flex flex-col items-center text-gray-200">
       <Link
-        href={`/generals/tuong-quan-viet-nam${
-          dynasty ? `?dynasty=${dynasty}` : ""
-        }`}
+        href="/generals/tuong-quan-viet-nam"
         className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-4 px-4 py-2 rounded-lg mb-4"
       >
         ← Back to Vietnamese generals
@@ -64,19 +53,7 @@ const VietGeneralBio = async ({
           <div className="mt-6 text-lg text-center whitespace-pre-line border-2 border-white bg-black/50 rounded-lg p-4">
             {general.bio}
           </div>
-          <p className="mt-4 text-sm">
-            Nguồn:{" "}
-            <a
-              href={`/generals/tuong-quan-viet-nam${
-                dynasty ? `?dynasty=${dynasty}` : ""
-              }`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-amber-400 hover:underline"
-            >
-              Wikipedia
-            </a>
-          </p>
+          <p className="mt-4 text-sm">Nguồn: Chronicles of Valor</p>
         </div>
       </div>
     </div>

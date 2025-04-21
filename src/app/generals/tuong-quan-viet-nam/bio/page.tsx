@@ -1,23 +1,16 @@
-import React from "react";
 import VietGeneralBio from "@/server-components/generals-bio/VietGeneralBio";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "General Bio | Vietnamese Generals",
-  description: "Biography of a Vietnamese general",
+  title: "Vietnamese General Biography | Chronicles of Valor",
+  description: "Biography of a Vietnamese general from the feudal era",
 };
 
-// Sửa kiểu của searchParams thành Promise
-const Bio = ({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) => {
+export default async function Bio({ params }: { params: { slug: string } }) {
   return (
+    // Do not remove these fragments
     <>
-      <VietGeneralBio searchParams={searchParams} />
+      <VietGeneralBio params={params} />
     </>
   );
-};
-
-export default Bio;
+}
