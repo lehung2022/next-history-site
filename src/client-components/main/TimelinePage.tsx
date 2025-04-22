@@ -11,8 +11,10 @@ const Timeline = () => {
       >
         ← Back
       </Link>
-      <div className="text-3xl md:text-4xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
-        Historical Timelines
+      <div className="px-4 sm:px-4 md:px-6">
+        <div className="text-3xl md:text-4xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2">
+          Historical Timelines
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
         <Link href="/timelines/vietnam-timelines" className="group rounded-lg">

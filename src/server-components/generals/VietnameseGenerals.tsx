@@ -69,7 +69,7 @@ const VietnameseGenerals = async ({
       >
         ← Back to generals
       </Link>
-      <div className="px-4">
+      <div className="px-4 sm:px-4 md:px-6">
         <div className="text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 max-w-2xl text-center">
           <h2>TƯỚNG QUÂN VIỆT NAM</h2>
           <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2">
@@ -100,41 +100,47 @@ const VietnameseGenerals = async ({
           </Link>
         ))}
       </div>
-      <div className="flex gap-2 mt-6">
+      <div className="flex items-center gap-2 mt-6 overflow-x-auto whitespace-nowrap">
+        {/* Nút Go to first (chỉ icon) */}
         {page <= 1 ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronsLeft className="mr-1" /> Go to first
+          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronsLeft className="w-5 h-5 sm:w-4 sm:h-4" />
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=1`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            <FiChevronsLeft className="mr-1" /> Go to first
+            <FiChevronsLeft className="w-5 h-5 sm:w-4 sm:h-4" />
           </Link>
         )}
+        {/* Nút Prev (chỉ icon) */}
         {page <= 1 ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronLeft className="mr-1" /> Prev
+          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=${page - 1}`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            <FiChevronLeft className="mr-1" /> Prev
+            <FiChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
           </Link>
         )}
+        {/* Số trang */}
         {pageRange.map((p, index) =>
           p === "..." ? (
-            <span key={`ellipsis-${index}`} className="px-4 py-2">
+            <span
+              key={`ellipsis-${index}`}
+              className="px-2 py-1 sm:px-1 sm:py-0.5 flex items-center text-sm"
+            >
               ...
             </span>
           ) : (
             <Link
               key={`page-${p}-${index}`}
               href={`/generals/tuong-quan-viet-nam?page=${p}`}
-              className={`px-4 py-2 rounded-lg border-2 border-white bg-black/50 ${
+              className={`px-2 py-1 sm:px-1 sm:py-0.5 rounded-lg border-2 border-white bg-black/50 text-sm ${
                 p === page
                   ? "bg-amber-500 text-emerald-200"
                   : "hover:bg-amber-500 text-emerald-200"
@@ -144,28 +150,30 @@ const VietnameseGenerals = async ({
             </Link>
           )
         )}
+        {/* Nút Next (chỉ icon) */}
         {page >= totalPages ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronRight className="mr-1" /> Next
+          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=${page + 1}`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            <FiChevronRight className="mr-1" /> Next
+            <FiChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
           </Link>
         )}
+        {/* Nút Go to last (chỉ icon) */}
         {page >= totalPages ? (
-          <span className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronsRight className="mr-1" /> Go to last
+          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
+            <FiChevronsRight className="w-5 h-5 sm:w-4 sm:h-4" />
           </span>
         ) : (
           <Link
             href={`/generals/tuong-quan-viet-nam?page=${totalPages}`}
-            className="px-4 py-2 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
+            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
           >
-            <FiChevronsRight className="mr-1" /> Go to last
+            <FiChevronsRight className="w-5 h-5 sm:w-4 sm:h-4" />
           </Link>
         )}
       </div>

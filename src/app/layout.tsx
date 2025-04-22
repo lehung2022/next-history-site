@@ -2,6 +2,7 @@ import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
 import Footer from "@/client-components/main/Footer";
 import ErrorBoundary from "@/client-components/main/ErrorBoundary";
+import Head from "next/head";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -47,6 +48,13 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
+      <Head>
+        <link
+          rel="preload"
+          href="/_next/static/chunks/src_app_globals_b805903d.css"
+          as="style"
+        />
+      </Head>
       <body className="font-sans antialiased min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1] bg-black/35">
           <Image
