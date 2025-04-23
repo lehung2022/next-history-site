@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { useContactStore } from "@/store/store";
+import { useContactStore } from "@/store/contact";
 import ContactPage from "@/client-components/main/ContactPage";
 import ContactInfo from "@/client-components/sub/ContactInfo";
 

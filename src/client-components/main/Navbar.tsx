@@ -1,9 +1,12 @@
+// src/client-components/main/Navbar.tsx
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaSearch } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useSearchStore } from "@/store/search";
+import { useAboutStore } from "@/store/about";
 
 const navItems = [
   { href: "/about", label: "About" },
@@ -16,7 +19,8 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { query, setQuery } = useSearchStore();
+  const { language } = useAboutStore(); // Chuẩn bị đa ngôn ngữ
   const router = useRouter();
 
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -25,12 +29,15 @@ const Navbar = () => {
   const closeSearch = () => setIsSearchOpen(false);
 
   const handleSearchSubmit = () => {
-    if (searchQuery.trim()) {
-      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-      setSearchQuery("");
+    if (query.trim()) {
+      router.push(`/search?query=${encodeURIComponent(query)}`);
+      setQuery("");
       closeSearch();
     }
   };
+
+  // Placeholder theo ngôn ngữ (tạm thời)
+  const placeholder = language === "Vietnamese" ? "Tìm kiếm..." : "Search...";
 
   const inputClassName =
     "p-2 pr-8 rounded-md bg-transparent backdrop-blur-sm text-white w-full md:focus:w-[192px] md:transition-all md:duration-300";
@@ -60,9 +67,9 @@ const Navbar = () => {
             <div className="hidden md:flex items-center flex-shrink-0 w-48 relative">
               <input
                 type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={placeholder}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
                 className={inputClassName}
               />
@@ -173,9 +180,9 @@ const Navbar = () => {
               <div className="relative w-full max-w-md">
                 <input
                   type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={placeholder}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
                   className={inputClassName}
                   autoFocus

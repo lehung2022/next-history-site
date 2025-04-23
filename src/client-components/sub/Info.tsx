@@ -1,9 +1,14 @@
 "use client";
+import { useAboutStore } from "@/store/about";
+
 type InfoProps = {
-  title: string;
-  items: { label: string; url: string }[];
+  title: "Image Sources" | "Article Sources";
 };
-const Information: React.FC<InfoProps> = ({ title, items }) => {
+
+const Info: React.FC<InfoProps> = ({ title }) => {
+  const { imageSources, articleSources } = useAboutStore();
+  const items = title === "Image Sources" ? imageSources : articleSources;
+
   return (
     <div className="border border-gray-700 p-6 sm:p-8 rounded-lg bg-gray-950/50 transition-transform hover:scale-105">
       <h2 className="text-2xl font-bold text-blue-50 mb-2">{title}</h2>
@@ -24,4 +29,5 @@ const Information: React.FC<InfoProps> = ({ title, items }) => {
     </div>
   );
 };
-export default Information;
+
+export default Info;

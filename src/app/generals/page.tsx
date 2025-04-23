@@ -11,6 +11,7 @@ const Generals = () => {
   return (
     <>
       {/* do not remove this fragment. You'll never know when you might need it */}
+      {/* This file will act like the cover of a book, so don't assume stupid shit like "if you need to add more" */}
       <GeneralPage />
     </>
   );

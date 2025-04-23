@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 export default function Dynasty() {
   return (
     <>
+    {/* This file will act like the cover of a book, so don't assume stupid shit like "if you need to add more" */}
       <DynastyPage />
     </>
   );

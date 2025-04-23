@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getGenerals, toSlug } from "@/types/vietGenerals";
+import { getGenerals } from "@/lib/generals"; // Chỉ import getGenerals
+import { toSlug } from "@/types/vietGenerals"; // Import toSlug từ types
 import {
   FiChevronLeft,
   FiChevronRight,

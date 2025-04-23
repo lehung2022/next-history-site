@@ -1,13 +1,20 @@
-"use client";
-import Link from "next/link";
-import { lazy, Suspense, useMemo } from "react";
-import { domainLinks } from "@/client-components/sub/domain-links";
+// src/client-components/main/AboutPage.tsx
+'use client';
+import Link from 'next/link';
+import { lazy, Suspense } from 'react';
+import { useAboutStore } from '@/store/about';
 
-const Information = lazy(() => import("@/client-components/sub/Info"));
+const Info = lazy(() => import('@/client-components/sub/Info')); // Sửa từ Information
 
 export default function AboutPage() {
-  const imageSources = useMemo(() => domainLinks.imageSources, []);
-  const articleSources = useMemo(() => domainLinks.articleSources, []);
+  const { language, setLanguage } = useAboutStore();
+
+  const languages = [
+    { name: 'Vietnamese', flag: '🇻🇳' },
+    { name: 'Japanese', flag: '🇯🇵' },
+    { name: 'Cantonese', flag: '🇨🇳' },
+    { name: 'Hakka', flag: '🇹🇼' },
+  ];
 
   return (
     <div className="flex flex-col items-center px-6 py-4 text-white">
@@ -23,21 +30,28 @@ export default function AboutPage() {
         <Suspense
           fallback={<div className="h-20 bg-gray-800 animate-pulse"></div>}
         >
-          <Information title="Image Sources" items={imageSources} />
+          <Info title="Image Sources" />
         </Suspense>
         <Suspense
           fallback={<div className="h-20 bg-gray-800 animate-pulse"></div>}
         >
-          <Information title="Article Sources" items={articleSources} />
+          <Info title="Article Sources" />
         </Suspense>
       </div>
       <div className="border border-blue-500/50 p-6 sm:p-8 rounded-lg bg-gray-950/50 mt-6 max-w-2xl w-full transition-transform hover:scale-102 hover:bg-gray-900/70 shadow-lg">
         <h2 className="text-2xl font-bold text-blue-50 mb-2">Languages Used</h2>
         <ul className="list-disc list-inside text-blue-300 mt-2">
-          <li>🇻🇳 Vietnamese</li>
-          <li>🇯🇵 Japanese</li>
-          <li>🇨🇳 Cantonese</li>
-          <li>🇹🇼 Hakka</li>
+          {languages.map((lang) => (
+            <li
+              key={lang.name}
+              className={`cursor-pointer hover:text-amber-500 ${
+                language === lang.name ? 'text-amber-500 font-bold' : ''
+              }`}
+              onClick={() => setLanguage(lang.name)}
+            >
+              {lang.flag} {lang.name}
+            </li>
+          ))}
         </ul>
       </div>
       <Link

@@ -14,6 +14,7 @@ export default async function VietnamGenerals({
 }) {
   return (
     <>
+    {/* This one is the wrapper for the actual component */}
       <VietnameseGenerals searchParams={searchParams} />
     </>
   );

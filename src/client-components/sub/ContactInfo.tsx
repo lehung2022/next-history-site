@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import { FaTwitter, FaEnvelope, FaDiscord } from "react-icons/fa";
 import { PiMicrosoftTeamsLogoFill } from "react-icons/pi";
-import { useContactStore } from "@/store/store";
+import { useContactStore } from "@/store/contact";
 
 const ContactInfo = () => {
   const { contact } = useContactStore();
