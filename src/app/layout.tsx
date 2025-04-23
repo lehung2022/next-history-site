@@ -62,7 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ErrorBoundary>
           <Navbar />
         </ErrorBoundary>
-        <main className="flex-grow mt-16 pb-20">{children}</main>
+        <main className="flex-grow mt-16 pb-6">{children}</main>
         <Footer />
       </body>
     </html>

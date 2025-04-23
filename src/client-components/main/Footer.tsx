@@ -17,11 +17,6 @@ const Footer = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Debug: Log render
-  useEffect(() => {
-    console.log("Footer rendered");
-  }, []);
-
   const year = new Date().getFullYear();
   const copyright = `©${year} Chronicles of Valor. All rights reserved.`;
   const contactText = language === "Vietnamese" ? "Liên hệ" : "Contact Me";
@@ -33,10 +28,7 @@ const Footer = () => {
     : "Updating time...";
 
   return (
-    <footer
-      className="fixed bottom-0 left-0 right-0 w-full bg-transparent backdrop-blur-sm text-white p-4 z-20"
-      id="site-footer"
-    >
+    <footer className="bg-transparent backdrop-blur-sm text-white p-4 w-full sticky bottom-0 z-10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
           <p>{copyright}</p>
@@ -44,7 +36,7 @@ const Footer = () => {
         <div className="text-center">
           <Link
             href="/contact"
-            className="flex items-center gap-2 hover:text-blue-400"
+            className="flex items-center gap-2 hover:text-blue-400 px-2 py-1"
           >
             <FaEnvelope size={20} />
             <span>{contactText}</span>
