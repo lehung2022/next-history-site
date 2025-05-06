@@ -16,16 +16,6 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/v0/b/next-js-history.appspot.com/o/**",
       },
-      {
-        protocol: "https",
-        hostname: "i.pinimg.com",
-        pathname: "/**", // Cho phép tất cả đường dẫn từ i.pinimg.com
-      },
-      {
-        protocol: "https",
-        hostname: "sohanews.sohacdn.com",
-        pathname: "/**", // Cho phép tất cả đường dẫn từ i.pinimg.com
-      },
     ],
   },
 };

@@ -19,7 +19,7 @@ const ChineseGenerals = () => {
           <div className="my-4 flex justify-center">
             <div className="relative w-full max-w-md aspect-[1/1] border-2 border-white rounded-lg ">
               <Image
-                src="https://i.pinimg.com/736x/af/3d/cf/af3dcf520930810278aa05883765a7d7.jpg"
+                src="https://firebasestorage.googleapis.com/v0/b/next-js-history.appspot.com/o/zung-gwok-generals%2Fsyun-gin.jpeg?alt=media&token=e56a92d8-187f-4f6f-a5bb-a5763aa86204"
                 alt="Sun Jian"
                 fill
                 className="object-contain rounded-lg transition-all duration-300"

@@ -19,7 +19,7 @@ const JapaneseGenerals = () => {
           <div className="my-4 flex justify-center">
             <div className="relative w-full max-w-md aspect-[1/1] border-2 border-white rounded-lg ">
               <Image
-                src="https://sohanews.sohacdn.com/2017/photo-1-1490088119952.jpg"
+                src="https://firebasestorage.googleapis.com/v0/b/next-js-history.appspot.com/o/nihon-generals%2FOda-Nobunaga.jpeg?alt=media&token=1ce0ec56-e1bf-45a9-ae57-4cedf0ef498f"
                 alt="Oda Nobunaga"
                 fill
                 className="object-contain rounded-lg transition-all duration-300"
@@ -31,11 +31,11 @@ const JapaneseGenerals = () => {
             </div>
           </div>
           <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2">
-            Oda Nobunaga (織田信長 - おだのぶなが - Chức-Điền Tín-Trưởng)? 23 tháng
-            6 năm 1534 – 21 tháng 6 năm 1582) là một daimyo trong thời kỳ Chiến
-            Quốc của lịch sử Nhật Bản. Ông là người có công lớn trong việc thống
-            nhất Nhật Bản, chấm dứt thời kỳ chiến loạn kéo dài trên khắp cả
-            nước. Những nỗ lực vào việc thống nhất đất nước của ông được tiếp
+            Oda Nobunaga (織田信長 - おだのぶなが - Chức-Điền Tín-Trưởng)? 23
+            tháng 6 năm 1534 – 21 tháng 6 năm 1582) là một daimyo trong thời kỳ
+            Chiến Quốc của lịch sử Nhật Bản. Ông là người có công lớn trong việc
+            thống nhất Nhật Bản, chấm dứt thời kỳ chiến loạn kéo dài trên khắp
+            cả nước. Những nỗ lực vào việc thống nhất đất nước của ông được tiếp
             nối và hoàn thành bởi hai người thừa kế của ông, đầu tiên là
             Toyotomi Hideyoshi và sau đó là Tokugawa Ieyasu, người đã thống nhất
             đất nước và lập ra chế độ Mạc phủ Tokugawa thống trị Nhật Bản đến

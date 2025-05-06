@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getGenerals } from "@/lib/generals"; // Chỉ import getGenerals
-import { toSlug } from "@/types/vietGenerals"; // Import toSlug từ types
 import {
   FiChevronLeft,
   FiChevronRight,
@@ -43,26 +41,9 @@ const getPageRange = (
   return range;
 };
 
-const VietnameseGenerals = async ({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string }>;
-}) => {
-  const resolvedSearchParams = await searchParams;
-  const limit = 10; // 10 tướng mỗi trang
-  const { generals: paginatedGenerals, totalPages } = await getGenerals(
-    1,
-    limit
-  ); // Lấy totalPages trước
-  const page = Math.max(
-    1,
-    Math.min(totalPages, parseInt(resolvedSearchParams.page || "1", 10))
-  ); // Giới hạn 1 <= page <= totalPages
-  const { generals } = await getGenerals(page, limit); // Lấy dữ liệu trang hiện tại
-
-  const pageRange = getPageRange(page, totalPages);
-
+function VietnameseGenerals() {
   return (
+    // This is for server component, don't mistake it for client component
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/generals/"
@@ -70,116 +51,46 @@ const VietnameseGenerals = async ({
       >
         ← Back to generals
       </Link>
-      <div className="px-4 sm:px-4 md:px-6">
+      <div className="px-4">
         <div className="text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 max-w-2xl text-center">
-          <h2>TƯỚNG QUÂN VIỆT NAM</h2>
+          <h2>Tướng quân Việt Nam</h2>
+          <div className="my-4 flex justify-center">
+            <div className="relative w-full max-w-md aspect-[1/1] border-2 border-white rounded-lg ">
+              <Image
+                src="https://firebasestorage.googleapis.com/v0/b/next-js-history.appspot.com/o/vietnam-generals%2Fngo-quyen.PNG?alt=media&token=33530dfc-21ab-473f-84db-d893aaa1763b"
+                alt="Ngô Quyền"
+                fill
+                className="object-contain rounded-lg transition-all duration-300"
+                sizes="(max-width: 768px) 100vw, 448px"
+                quality={70}
+                placeholder="blur"
+                blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+              />
+            </div>
+          </div>
           <p className="text-lg text-center max-w-5xl mb-6 px-4 py-2">
-            Danh sách các danh tướng Việt Nam qua các triều đại phong kiến
+            Ngô Quyền (chữ Hán: 吳權; 17 tháng 4 năm 898 – 14 tháng 2 năm 944),
+            còn được biết đến với tên gọi Tiền Ngô Vương (前吳王) là vị vua đầu
+            tiên của nhà Ngô trong lịch sử Việt Nam. Năm 938, ông là người lãnh
+            đạo nhân dân đánh bại quân Nam Hán trong trận Bạch Đằng, chính thức
+            kết thúc gần một ngàn năm Bắc thuộc, mở ra một thời kì độc lập lâu
+            dài của Việt Nam. Sau chiến thắng này, ông lên ngôi vua, lập ra nhà
+            Ngô, trị vì từ năm 939 đến năm 944.
+            <br />
+            Nguồn:{" "}
+            <a
+              href="https://vi.wikipedia.org/wiki/Ng%C3%B4_Quy%E1%BB%81n"
+              className="text-blue-400 hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Wikipedia - 吳權
+            </a>
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-5xl px-4">
-        {generals.map((general) => (
-          <Link
-            key={general.id}
-            href={`/generals/tuong-quan-viet-nam/bio/${toSlug(general.name)}`}
-            className="group rounded-lg"
-          >
-            <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg overflow-hidden p-2 bg-amber-300 group-hover:bg-amber-500 group-active:bg-amber-500">
-              <Image
-                src={general.image}
-                alt={general.name}
-                fill
-                className="object-contain rounded-lg group-hover:scale-102 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
-                sizes="(max-width: 768px) 100vw, 33vw"
-                quality={60}
-              />
-            </div>
-            <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-amber-500 group-active:bg-amber-500 group-hover:text-black group-active:text-black transition-all duration-300">
-              {general.name}
-            </p>
-          </Link>
-        ))}
-      </div>
-      <div className="flex items-center gap-2 mt-6 overflow-x-auto whitespace-nowrap">
-        {/* Nút Go to first (chỉ icon) */}
-        {page <= 1 ? (
-          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronsLeft className="w-5 h-5 sm:w-4 sm:h-4" />
-          </span>
-        ) : (
-          <Link
-            href={`/generals/tuong-quan-viet-nam?page=1`}
-            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
-          >
-            <FiChevronsLeft className="w-5 h-5 sm:w-4 sm:h-4" />
-          </Link>
-        )}
-        {/* Nút Prev (chỉ icon) */}
-        {page <= 1 ? (
-          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
-          </span>
-        ) : (
-          <Link
-            href={`/generals/tuong-quan-viet-nam?page=${page - 1}`}
-            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
-          >
-            <FiChevronLeft className="w-5 h-5 sm:w-4 sm:h-4" />
-          </Link>
-        )}
-        {/* Số trang */}
-        {pageRange.map((p, index) =>
-          p === "..." ? (
-            <span
-              key={`ellipsis-${index}`}
-              className="px-2 py-1 sm:px-1 sm:py-0.5 flex items-center text-sm"
-            >
-              ...
-            </span>
-          ) : (
-            <Link
-              key={`page-${p}-${index}`}
-              href={`/generals/tuong-quan-viet-nam?page=${p}`}
-              className={`px-2 py-1 sm:px-1 sm:py-0.5 rounded-lg border-2 border-white bg-black/50 text-sm ${
-                p === page
-                  ? "bg-amber-500 text-emerald-200"
-                  : "hover:bg-amber-500 text-emerald-200"
-              }`}
-            >
-              {p}
-            </Link>
-          )
-        )}
-        {/* Nút Next (chỉ icon) */}
-        {page >= totalPages ? (
-          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
-          </span>
-        ) : (
-          <Link
-            href={`/generals/tuong-quan-viet-nam?page=${page + 1}`}
-            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
-          >
-            <FiChevronRight className="w-5 h-5 sm:w-4 sm:h-4" />
-          </Link>
-        )}
-        {/* Nút Go to last (chỉ icon) */}
-        {page >= totalPages ? (
-          <span className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">
-            <FiChevronsRight className="w-5 h-5 sm:w-4 sm:h-4" />
-          </span>
-        ) : (
-          <Link
-            href={`/generals/tuong-quan-viet-nam?page=${totalPages}`}
-            className="p-2 sm:p-1 rounded-lg border-2 border-white bg-black/50 hover:bg-amber-500 hover:text-black flex items-center"
-          >
-            <FiChevronsRight className="w-5 h-5 sm:w-4 sm:h-4" />
-          </Link>
-        )}
-      </div>
     </div>
   );
-};
+}
 
 export default VietnameseGenerals;

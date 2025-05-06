@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Introduction from "./Introduction";
 
 const Homepage = () => {
   return (
@@ -56,6 +57,9 @@ const Homepage = () => {
             Timelines
           </p>
         </Link>
+      </div>
+      <div className="px-4 sm:px-4 md:px-6">
+        <Introduction />
       </div>
     </div>
   );
