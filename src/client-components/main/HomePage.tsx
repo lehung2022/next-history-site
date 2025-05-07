@@ -6,7 +6,7 @@ const Homepage = () => {
   return (
     <div className="flex flex-col items-center text-white">
       <div className="px-4 sm:px-4 md:px-6">
-        <div className="text-3xl md:text-4xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 sm:px-4 md:px-6">
+        <div className="text-3xl md:text-4xl font-bold my-4 mt-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 sm:px-4 md:px-6">
           Choose your destiny
         </div>
       </div>

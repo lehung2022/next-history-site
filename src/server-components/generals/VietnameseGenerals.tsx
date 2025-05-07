@@ -1,47 +1,8 @@
+import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  FiChevronLeft,
-  FiChevronRight,
-  FiChevronsLeft,
-  FiChevronsRight,
-} from "react-icons/fi";
 
-// Hàm tính danh sách trang để hiển thị (VD: 1 ... 6 ... 12)
-const getPageRange = (
-  currentPage: number,
-  totalPages: number
-): (number | string)[] => {
-  const range: (number | string)[] = [];
-
-  // Trường hợp ít trang
-  if (totalPages <= 3) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  // Thêm trang 1
-  range.push(1);
-
-  // Thêm ... và trang hiện tại
-  if (currentPage > 2) {
-    range.push("...");
-  }
-  if (currentPage !== 1 && currentPage !== totalPages) {
-    range.push(currentPage);
-  }
-  if (currentPage < totalPages - 1) {
-    range.push("...");
-  }
-
-  // Thêm trang cuối
-  if (totalPages > 1) {
-    range.push(totalPages);
-  }
-
-  return range;
-};
-
-function VietnameseGenerals() {
+const VietnameseGenerals: FC = () => {
   return (
     // This is for server component, don't mistake it for client component
     <div className="flex flex-col items-center text-gray-200">
@@ -91,6 +52,6 @@ function VietnameseGenerals() {
       </div>
     </div>
   );
-}
+};
 
 export default VietnameseGenerals;

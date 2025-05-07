@@ -1,4 +1,3 @@
-// src/store/about.ts
 import { create } from "zustand";
 import { domainLinks } from "@/client-components/sub/source-links";
 
