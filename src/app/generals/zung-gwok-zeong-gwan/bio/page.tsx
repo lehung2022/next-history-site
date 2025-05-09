@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "Biography of a Chinese general from the feudal era",
 };
 
-export default async function Bio({ params }: { params: { slug: string } }) {
+export default function Bio() {
   return (
     // Do not remove these fragments
     <>

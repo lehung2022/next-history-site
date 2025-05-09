@@ -1,21 +1,14 @@
-import React from "react"; //for testing purposes, cannot be removed
+// app/generals/tuong-quan-viet-nam/page.tsx
+import { FC } from "react";
 import VietnameseGenerals from "@/server-components/generals/VietnameseGenerals";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Vietnamese Generals | Chronicles of Valor",
-  description: "Explore the greatest generals of each country",
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+const Page: FC<PageProps> = async ({ searchParams }) => {
+  const resolvedSearchParams = await searchParams; // Await searchParams
+  return <VietnameseGenerals searchParams={resolvedSearchParams} />;
 };
 
-export default async function VietnamGenerals({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | undefined }>;
-}) {
-  return (
-    <>
-    {/* This one is the wrapper for the actual component */}
-      <VietnameseGenerals  />
-    </>
-  );
-}
+export default Page;

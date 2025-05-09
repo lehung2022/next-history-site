@@ -5,9 +5,15 @@ import ContactInfo from "@/client-components/sub/ContactInfo";
 
 // Mock next/link để kiểm tra href
 jest.mock("next/link", () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
-  );
+  const MockLink = ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>;
+  MockLink.displayName = "MockLink"; // Thêm displayName
+  return MockLink;
 });
 
 // Mock useContactStore
