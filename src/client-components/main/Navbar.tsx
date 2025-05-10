@@ -1,12 +1,24 @@
-// src/client-components/main/Navbar.tsx
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaSearch } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/store/search";
 import { useAboutStore } from "@/store/about";
+
+const MotionDiv = dynamic(
+  () => import("framer-motion").then((mod) => mod.motion.div),
+  {
+    ssr: false,
+  }
+);
+const AnimatePresence = dynamic(
+  () => import("framer-motion").then((mod) => mod.AnimatePresence),
+  {
+    ssr: false,
+  }
+);
 
 const navItems = [
   { href: "/about", label: "About" },
@@ -20,8 +32,18 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { query, setQuery } = useSearchStore();
-  const { language } = useAboutStore(); // Chuẩn bị đa ngôn ngữ
+  const { language } = useAboutStore();
   const router = useRouter();
+
+  console.log("Language:", language);
+  console.log(
+    "Link className:",
+    "text-xl md:text-2xl font-bold whitespace-nowrap"
+  );
+  console.log(
+    "Placeholder:",
+    language === "Vietnamese" ? "Tìm kiếm..." : "Search..."
+  );
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -36,7 +58,6 @@ const Navbar = () => {
     }
   };
 
-  // Placeholder theo ngôn ngữ (tạm thời)
   const placeholder = language === "Vietnamese" ? "Tìm kiếm..." : "Search...";
 
   const inputClassName =
@@ -45,10 +66,10 @@ const Navbar = () => {
   return (
     <>
       <nav className="bg-transparent backdrop-blur-sm text-white p-4 fixed w-full top-0 z-20">
-        <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-2">
+        <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-2 min-w-[320px]">
           <div className="relative flex items-center justify-between w-full">
             <div className="flex-shrink-0 w-12">
-              <motion.button
+              <MotionDiv
                 onClick={toggleMenu}
                 aria-label="Toggle menu"
                 className="flex items-center justify-center"
@@ -57,10 +78,13 @@ const Navbar = () => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
                 {isOpen ? "✕" : <FaBars size={24} />}
-              </motion.button>
+              </MotionDiv>
             </div>
             <div className="absolute left-1/2 -translate-x-1/2">
-              <Link href="/" className="text-xl md:text-2xl font-bold">
+              <Link
+                href="/"
+                className="text-xl md:text-2xl font-bold whitespace-nowrap"
+              >
                 Chronicles of Valor
               </Link>
             </div>
@@ -92,10 +116,9 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Overlay cho hamburger menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             data-testid="overlay"
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30"
             initial={{ opacity: 0 }}
@@ -107,10 +130,9 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Sidebar menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             className="fixed top-0 left-0 bg-gray-800/50 text-white flex flex-col items-center gap-6 py-6 z-40 w-full md:w-64 h-screen"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
@@ -136,14 +158,13 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
 
-      {/* Overlay cho search trên Mobile */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div
+          <MotionDiv
             data-testid="search-bg-overlay"
             className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 md:hidden"
             initial={{ opacity: 0 }}
@@ -155,10 +176,9 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      {/* Search overlay (Mobile only) */}
       <AnimatePresence>
         {isSearchOpen && (
-          <motion.div
+          <MotionDiv
             data-testid="search-overlay"
             className="fixed top-0 left-0 w-full h-screen bg-gray-800/90 text-white z-40 md:hidden"
             initial={{ x: "100%" }}
@@ -189,7 +209,7 @@ const Navbar = () => {
                 />
               </div>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </>

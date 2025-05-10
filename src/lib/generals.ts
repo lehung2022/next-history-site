@@ -86,7 +86,6 @@ export async function getGeneral(slug: string): Promise<General | null> {
         dynastyId: "unknown",
         name,
         image: image.url,
-        bio: "Tiểu sử đang cập nhật",
         country: "Vietnam",
       };
     }

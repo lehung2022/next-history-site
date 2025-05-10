@@ -1,5 +1,4 @@
-// src/server-components/generals/VietnameseGenerals.tsx
-import { FC } from "react";
+import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { getGenerals } from "@/lib/generals";
@@ -10,6 +9,8 @@ import {
   FiChevronsLeft,
   FiChevronsRight,
 } from "react-icons/fi";
+
+export const revalidate = 600; 
 
 // Hàm tính danh sách trang để hiển thị
 const getPageRange = (
@@ -41,9 +42,9 @@ const getPageRange = (
   return range;
 };
 
-interface VietnameseGeneralsProps {
+type VietnameseGeneralsProps = {
   searchParams: { [key: string]: string | undefined };
-}
+};
 
 const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
   searchParams,
@@ -59,34 +60,39 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
   const pageRange = getPageRange(page, totalPages);
 
   return (
-    <div className="flex flex-col items-center text-gray-200 min-h-screen">
+    <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/generals/"
         className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-4 px-4 py-2 rounded-lg mb-4"
       >
         ← Back to generals
       </Link>
-      <div className="px-4 xs:px-4 w-full max-w-4xl">
-        {" "}
-        {/* Giảm padding trên <400px */}
-        <div className="text-xl xs:text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 text-center">
-          <h2>Tướng quân Việt Nam</h2>
+      <div className="px-2 xs:px-4 w-full max-w-4xl">
+        <div className="w-fit mx-auto text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 sm:px-4 md:px-6 text-center">
+          Tướng Quân Việt Nam
         </div>
         {generals.length === 0 ? (
           <p className="text-center text-base xs:text-lg">
             Không tìm thấy tướng nào.
           </p>
         ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-6">
+          <Suspense
+            fallback={
+              <div className="text-center text-base xs:text-lg">
+                Đang tải...
+              </div>
+            }
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-6 mx-2 xs:mx-4">
               {generals.map((general: General) => (
                 <Link
                   key={general.id}
                   href={`/bio/${toSlug(general.name)}`}
-                  className="group"
+                  className="group flex flex-col"
                 >
-                  <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-yellow-500 transition-all duration-300">
-                    <div className="relative w-full aspect-[1/1] mb-3 xs:mb-4">
+                  {/* Ảnh */}
+                  <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-yellow-500 group-hover:border-yellow-300 active:bg-yellow-500 active:border-yellow-300 transition-all duration-300">
+                    <div className="relative w-full aspect-[1/1]">
                       <Image
                         src={general.image}
                         alt={general.name}
@@ -99,13 +105,11 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
                         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                       />
                     </div>
-                    <h3 className="text-lg xs:text-xl font-semibold text-center">
-                      {general.name}
-                    </h3>
-                    <p className="text-xs xs:text-sm text-center mt-2 line-clamp-3">
-                      {general.bio}
-                    </p>
                   </div>
+                  {/* Tiêu đề */}
+                  <h3 className="mt-2 text-lg xs:text-xl font-semibold text-center border-2 border-white bg-black/50 rounded-lg px-2 py-1 group-hover:bg-yellow-500 group-hover:text-black group-hover:border-yellow-300 active:bg-yellow-500 active:text-black active:border-yellow-300 transition-all duration-300 truncate">
+                    {general.name}
+                  </h3>
                 </Link>
               ))}
             </div>
@@ -119,7 +123,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               ) : (
                 <Link
                   href={`/generals/tuong-quan-viet-nam?page=1`}
-                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 flex items-center"
+                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 active:bg-red-700 flex items-center"
                 >
                   <FiChevronsLeft className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
@@ -132,7 +136,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               ) : (
                 <Link
                   href={`/generals/tuong-quan-viet-nam?page=${page - 1}`}
-                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 flex items-center"
+                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 active:bg-red-700 flex items-center"
                 >
                   <FiChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
@@ -153,7 +157,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
                     className={`px-2 xs:px-3 py-0.5 xs:py-1 rounded-lg border-2 border-white text-xs xs:text-sm ${
                       p === page
                         ? "bg-red-900 text-white"
-                        : "bg-black/50 hover:bg-red-700 text-gray-200"
+                        : "bg-black/50 hover:bg-red-700 active:bg-red-700 text-gray-200"
                     }`}
                   >
                     {p}
@@ -168,7 +172,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               ) : (
                 <Link
                   href={`/generals/tuong-quan-viet-nam?page=${page + 1}`}
-                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 flex items-center"
+                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 active:bg-red-700 flex items-center"
                 >
                   <FiChevronRight className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
@@ -181,13 +185,13 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               ) : (
                 <Link
                   href={`/generals/tuong-quan-viet-nam?page=${totalPages}`}
-                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 flex items-center"
+                  className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 hover:bg-red-700 active:bg-red-700 flex items-center"
                 >
                   <FiChevronsRight className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
               )}
             </div>
-          </>
+          </Suspense>
         )}
       </div>
     </div>
