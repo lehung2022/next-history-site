@@ -5,7 +5,7 @@ import { FaBars, FaSearch } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/store/search";
-import { useAboutStore } from "@/store/about";
+// import { useAboutStore } from "@/store/about";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -28,7 +28,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { query, setQuery } = useSearchStore();
-  const { language } = useAboutStore();
+  // const { language } = useAboutStore();
   const router = useRouter();
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
