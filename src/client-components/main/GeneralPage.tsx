@@ -7,13 +7,13 @@ const GeneralPage = () => {
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/"
-        className="text-white bg-transparent border border-gray-300 hover:bg-gray-950 active:bg-blue-700 md:hover:bg-gray-950 md:active:bg-gray-950 mt-4 px-4 py-2 rounded-lg mb-4 hover:scale-105 active:scale-105 transition-all duration-300"
+        className="text-white bg-transparent border border-gray-300 hover:bg-gray-950 active:bg-blue-700 md:hover:bg-gray-950 md:active:bg-gray-950 mt-6 px-4 py-2 rounded-lg mb-4 hover:scale-105 active:scale-105 transition-all duration-300"
       >
-        ← Back
+        ← Quay về trang chủ 
       </Link>
-      <div className="px-4 sm:px-4 md:px-6">
-        <div className="text-3xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 sm:px-4 md:px-6">
-          Choose your general
+      <div className="px-4">
+        <div className="text-2xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
+          Chọn vị tướng của bạn 
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4">
@@ -30,7 +30,7 @@ const GeneralPage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-yellow-500 group-active:bg-yellow-500 group-hover:text-black group-active:text-black transition-all duration-300">
-            Vietnamese Generals
+            Tướng quân Việt Nam
           </p>
         </Link>
         <Link href="/generals/japan-shogun" className="group rounded-lg">
@@ -45,7 +45,7 @@ const GeneralPage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-orange-300 group-active:bg-orange-300 group-hover:text-black group-active:text-black transition-all duration-300">
-            Japanese Generals
+            Tướng quân Nhật Bản
           </p>
         </Link>
         <Link
@@ -63,7 +63,7 @@ const GeneralPage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-red-500 group-active:bg-red-500 group-hover:text-black group-active:text-black transition-all duration-300">
-            Chinese Generals
+            Tướng quân Trung Quốc
           </p>
         </Link>
       </div>

@@ -5,9 +5,9 @@ import Introduction from "./Introduction";
 const Homepage = () => {
   return (
     <div className="flex flex-col items-center text-white">
-      <div className="px-4 sm:px-4 md:px-6">
-        <div className="text-3xl md:text-4xl font-bold my-4 mt-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 sm:px-4 md:px-6">
-          Choose your destiny
+      <div className="px-4">
+        <div className="text-2xl font-bold my-4 mt-6 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
+          Chọn số mệnh của bạn
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-5xl px-4">
@@ -17,14 +17,14 @@ const Homepage = () => {
               src="/other_images/lich_su_viet_nam.jpg"
               alt="Dynasties"
               fill
-              className="object-contain rounded-lg group-hover:scale-102  overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
+              className="object-contain rounded-lg group-hover:scale-102 overflow-hidden p-2 group-hover:opacity-75 group-active:scale-102 group-active:opacity-75 transition-all duration-300"
               sizes="(max-width: 768px) 100vw, 33vw"
               quality={70}
               priority
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-blue-700 group-active:bg-blue-700 group-hover:text-black group-active:text-black transition-all duration-300">
-            Dynasties
+            Triều đại
           </p>
         </Link>
         <Link href="/generals" className="group rounded-lg">
@@ -39,7 +39,7 @@ const Homepage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-black group-active:bg-black group-hover:text-white group-active:text-white transition-all duration-300">
-            Generals
+            Tướng quân 
           </p>
         </Link>
         <Link href="/timelines" className="group rounded-lg">
@@ -54,11 +54,11 @@ const Homepage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-emerald-700 group-active:bg-emerald-700 group-hover:text-black group-active:text-black transition-all duration-300">
-            Timelines
+            Dòng thời gian 
           </p>
         </Link>
       </div>
-      <div className="px-4 sm:px-4 md:px-6">
+      <div className="px-4">
         <Introduction />
       </div>
     </div>

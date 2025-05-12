@@ -9,9 +9,9 @@ const ChineseGenerals = () => {
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/generals/"
-        className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-4 px-4 py-2 rounded-lg mb-4"
+        className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-6 px-4 py-2 rounded-lg mb-4"
       >
-        ← Back to generals
+        ← Quay về trang tướng quân 
       </Link>
       <div className="px-4">
         <div className="text-2xl md:text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 py-2 max-w-2xl text-center">
@@ -19,7 +19,7 @@ const ChineseGenerals = () => {
           <div className="my-4 flex justify-center">
             <div className="relative w-full max-w-md aspect-[1/1] border-2 border-white rounded-lg ">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/next-js-history.appspot.com/o/zung-gwok-generals%2Fsyun-gin.jpeg?alt=media&token=e56a92d8-187f-4f6f-a5bb-a5763aa86204"
+                src="https://firebasestorage.googleapis.com/v0/b/next-js-history.appspot.com/o/zung-gwok-generals%2FT%C3%B4n-Ki%C3%AAn.jpeg?alt=media&token=ad76fbb8-863b-428b-b2fb-a5e50e3c85b9"
                 alt="Sun Jian"
                 fill
                 className="object-contain rounded-lg transition-all duration-300"

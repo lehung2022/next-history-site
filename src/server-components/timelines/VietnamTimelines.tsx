@@ -8,13 +8,10 @@ const VietnamTimelines = () => {
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/timelines"
-        className="text-white bg-transparent border border-gray-300 hover:bg-emerald-700 active:bg-emerald-700 mt-4 px-4 py-2 rounded-lg mb-4"
+        className="text-white bg-transparent border border-gray-300 hover:bg-emerald-700 active:bg-emerald-700 mt-6 px-4 py-2 rounded-lg mb-4"
       >
-        ← Back to Timelines
+        ← Quay về dòng thời gian 
       </Link>
-      <div className="text-4xl text-gray-100 items-center">
-        This is for Viet nam times.
-      </div>
     </div>
   );
 };

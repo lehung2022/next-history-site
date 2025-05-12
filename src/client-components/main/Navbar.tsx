@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { FaBars, FaSearch } from "react-icons/fa";
 import dynamic from "next/dynamic";
@@ -9,15 +9,11 @@ import { useAboutStore } from "@/store/about";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 const AnimatePresence = dynamic(
   () => import("framer-motion").then((mod) => mod.AnimatePresence),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
 
 const navItems = [
@@ -34,16 +30,22 @@ const Navbar = () => {
   const { query, setQuery } = useSearchStore();
   const { language } = useAboutStore();
   const router = useRouter();
+  const desktopInputRef = useRef<HTMLInputElement>(null);
+  const mobileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log("Language:", language);
-  console.log(
-    "Link className:",
-    "text-xl md:text-2xl font-bold whitespace-nowrap"
-  );
-  console.log(
-    "Placeholder:",
-    language === "Vietnamese" ? "Tìm kiếm..." : "Search..."
-  );
+  // Set focus cho input desktop khi mount
+  useEffect(() => {
+    if (desktopInputRef.current && window.innerWidth >= 768) {
+      desktopInputRef.current.focus();
+    }
+  }, []);
+
+  // Set focus cho input mobile khi search overlay mở
+  useEffect(() => {
+    if (isSearchOpen && mobileInputRef.current) {
+      mobileInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
@@ -51,17 +53,21 @@ const Navbar = () => {
   const closeSearch = () => setIsSearchOpen(false);
 
   const handleSearchSubmit = () => {
-    if (query.trim()) {
-      router.push(`/search?query=${encodeURIComponent(query)}`);
-      setQuery("");
-      closeSearch();
+    if (!query.trim()) {
+      alert("Vui lòng nhập từ khóa tìm kiếm!");
+      return;
     }
+    router.push(`/search?query=${encodeURIComponent(query)}`);
+    setQuery("");
+    closeSearch();
   };
 
-  const placeholder = language === "Vietnamese" ? "Tìm kiếm..." : "Search...";
+  const placeholder = "Tìm kiếm...";
 
-  const inputClassName =
-    "p-2 pr-8 rounded-md bg-transparent backdrop-blur-sm text-white w-full md:focus:w-[192px] md:transition-all md:duration-300";
+  const desktopInputClassName =
+    "p-2 pr-8 rounded-md bg-gray-800/50 text-white w-48 border border-gray-300";
+  const mobileInputClassName =
+    "p-2 rounded-md bg-gray-800/50 text-white w-full border border-gray-300";
 
   return (
     <>
@@ -90,12 +96,13 @@ const Navbar = () => {
             </div>
             <div className="hidden md:flex items-center flex-shrink-0 w-48 relative">
               <input
+                ref={desktopInputRef}
                 type="text"
                 placeholder={placeholder}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
-                className={inputClassName}
+                className={desktopInputClassName}
               />
               <FaSearch
                 size={16}
@@ -199,13 +206,13 @@ const Navbar = () => {
             >
               <div className="relative w-full max-w-md">
                 <input
+                  ref={mobileInputRef}
                   type="text"
                   placeholder={placeholder}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
-                  className={inputClassName}
-                  autoFocus
+                  className={mobileInputClassName}
                 />
               </div>
             </div>

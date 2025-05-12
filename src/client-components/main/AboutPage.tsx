@@ -1,24 +1,24 @@
 // src/client-components/main/AboutPage.tsx
-'use client';
-import Link from 'next/link';
-import { lazy, Suspense } from 'react';
-import { useAboutStore } from '@/store/about';
+"use client";
+import Link from "next/link";
+import { lazy, Suspense } from "react";
+import { useAboutStore } from "@/store/about";
 
-const Info = lazy(() => import('@/client-components/sub/Info')); // Sửa từ Information
+const Info = lazy(() => import("@/client-components/sub/Info"));
 
 export default function AboutPage() {
   const { language, setLanguage } = useAboutStore();
 
   const languages = [
-    { name: 'Vietnamese', flag: '🇻🇳' },
-    { name: 'Japanese', flag: '🇯🇵' },
-    { name: 'Cantonese', flag: '🇨🇳' },
-    { name: 'Hakka', flag: '🇹🇼' },
+    { name: "Vietnamese", flag: "🇻🇳" },
+    { name: "Japanese", flag: "🇯🇵" },
+    { name: "Cantonese", flag: "🇨🇳" },
+    { name: "Hakka", flag: "🇹🇼" },
   ];
 
   return (
     <div className="flex flex-col items-center px-6 py-4 text-white">
-      <div className="text-3xl bg-blue-700/50 sm:bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6 p-2 hover:bg-gray-900/70 transition-all duration-300">
+      <div className="text-2xl sm:text-3xl bg-blue-700/50 sm:bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6 px-4 py-2 hover:bg-gray-900/70 transition-all duration-300 whitespace-nowrap mx-auto w-fit">
         About This Project
       </div>
       <p className="border border-yellow-500/50 rounded-lg text-lg bg-gray-950/50 text-white max-w-3xl text-center mb-6 p-4 sm:p-6 shadow-xl hover:bg-gray-900/70 hover:shadow-2xl transition-all duration-300">
@@ -45,7 +45,7 @@ export default function AboutPage() {
             <li
               key={lang.name}
               className={`cursor-pointer hover:text-amber-500 ${
-                language === lang.name ? 'text-amber-500 font-bold' : ''
+                language === lang.name ? "text-amber-500 font-bold" : ""
               }`}
               onClick={() => setLanguage(lang.name)}
             >
@@ -58,7 +58,7 @@ export default function AboutPage() {
         href="/"
         className="mt-8 px-6 py-3 text-lg font-bold bg-slate-950/50 hover:bg-stone-600 active:bg-stone-700 text-yellow-100 transition-all duration-200 rounded-lg shadow-lg hover:scale-102 active:scale-102"
       >
-        ← Back
+        ← Quay về trang chủ
       </Link>
     </div>
   );

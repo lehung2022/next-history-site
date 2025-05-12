@@ -40,7 +40,6 @@ export async function getGenerals(
         dynastyId: "unknown",
         name,
         image: image.url,
-        bio: "Tiểu sử đang cập nhật",
         country: "Vietnam",
       };
     });

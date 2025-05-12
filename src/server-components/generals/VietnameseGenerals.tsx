@@ -1,7 +1,8 @@
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { getGenerals } from "@/lib/generals";
+import { QueryClient } from "@tanstack/react-query";
+import { getGenerals } from "@/lib/generalsOne";
 import { General, toSlug } from "@/types/vietGenerals";
 import {
   FiChevronLeft,
@@ -10,7 +11,7 @@ import {
   FiChevronsRight,
 } from "react-icons/fi";
 
-export const revalidate = 600; 
+export const revalidate = 300;
 
 // Hàm tính danh sách trang để hiển thị
 const getPageRange = (
@@ -53,8 +54,26 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
   const page = parseInt(searchParams.page ?? "1", 10) || 1;
   const limit = 8; // 8 tướng mỗi trang
 
-  // Lấy dữ liệu tướng
-  const { generals, totalPages } = await getGenerals(page, limit);
+  // Khởi tạo QueryClient cho server-side caching
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 300_000, // 5 phút, đồng bộ với ISR
+      },
+    },
+  });
+
+  // Prefetch dữ liệu với React Query
+  await queryClient.prefetchQuery({
+    queryKey: ["generals", page, limit],
+    queryFn: () => getGenerals(page, limit),
+  });
+
+  // Lấy dữ liệu từ cache
+  const { generals, totalPages } = queryClient.getQueryData<{
+    generals: General[];
+    totalPages: number;
+  }>(["generals", page, limit]) ?? { generals: [], totalPages: 0 };
 
   // Tính danh sách trang để hiển thị
   const pageRange = getPageRange(page, totalPages);
@@ -63,12 +82,12 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
     <div className="flex flex-col items-center text-gray-200">
       <Link
         href="/generals/"
-        className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-4 px-4 py-2 rounded-lg mb-4"
+        className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-6 px-4 py-2 rounded-lg mb-4"
       >
-        ← Back to generals
+        ← Quay về trang tướng quân 
       </Link>
       <div className="px-2 xs:px-4 w-full max-w-4xl">
-        <div className="w-fit mx-auto text-3xl font-bold my-4 border-2 border-white bg-black/50 rounded-lg px-4 sm:px-4 md:px-6 text-center">
+        <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
           Tướng Quân Việt Nam
         </div>
         {generals.length === 0 ? (

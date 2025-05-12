@@ -9,7 +9,7 @@ export default async function SearchPage({
   const { query } = await searchParams; // Await searchParams trước khi dùng
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <Search query={query} />
+      <Search searchParams={{ query }} />
     </Suspense>
   );
 }

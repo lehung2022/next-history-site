@@ -1,8 +1,14 @@
 // app/generals/tuong-quan-viet-nam/page.tsx
 import { FC } from "react";
 import VietnameseGenerals from "@/server-components/generals/VietnameseGenerals";
+import type { Metadata } from "next";
 
-interface PageProps {
+export const metadata: Metadata = {
+  title: "Vietnamese Generals | Chronicles of Valor",
+  description: "Explore the greatest generals of Vietnam",
+};
+
+type PageProps = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
