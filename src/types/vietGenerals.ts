@@ -1,10 +1,8 @@
 // src/types/vietGenerals.ts
 export type General = {
   id: string;
-  dynastyId: string;
   name: string;
   image: string;
-  country: string;
 };
 
 export const toSlug = (name: string) =>

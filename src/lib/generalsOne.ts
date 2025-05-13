@@ -1,96 +1,69 @@
-// src/lib/generals.ts
-import { General, toSlug } from "@/types/vietGenerals";
+import { unstable_cache } from "next/cache";
+import { getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebaseConfig";
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { listAll, ref } from "firebase/storage";
+import { toSlug } from "@/types/vietGenerals";
+import { General } from "@/types/vietGenerals";
 
-// Lấy danh sách ảnh từ Firebase Storage
-async function getGeneralImages(): Promise<{ name: string; url: string }[]> {
-  try {
-    const storageRef = ref(storage, "vietnam-generals");
-    const result = await listAll(storageRef);
-    const images = await Promise.all(
-      result.items.map(async (item) => {
-        const url = await getDownloadURL(item);
-        return { name: item.name, url };
-      })
-    );
-    return images;
-  } catch (error) {
-    console.error("Error listing images from Firebase Storage:", error);
-    return [];
-  }
+async function getGeneralImages() {
+  const storageRef = ref(storage, "vietnam-generals");
+  const imageRefs = await listAll(storageRef);
+  const images = await Promise.all(
+    imageRefs.items.map(async (item) => {
+      const url = await getDownloadURL(item);
+      return { name: item.name, url };
+    })
+  );
+  return images;
 }
 
-// Lấy danh sách tướng
 export async function getGenerals(
   page: number,
-  limit: number
+  limit: number,
+  getAll: boolean = false
 ): Promise<{ generals: General[]; totalPages: number }> {
-  try {
-    const images = await getGeneralImages();
-    const generals: General[] = images.map((image) => {
-      const name = image.name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]/g, " ")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-      return {
-        id: toSlug(name),
-        dynastyId: "unknown",
-        name,
-        image: image.url,
-        country: "Vietnam",
-      };
-    });
+  const cachedGetGenerals = unstable_cache(
+    async (page: number, limit: number, getAll: boolean) => {
+      try {
+        const images = await getGeneralImages();
+        const generals: General[] = images.map((image) => {
+          const name = image.name
+            .replace(/\.[^/.]+$/, "")
+            .replace(/[-_]/g, " ")
+            .split(" ")
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(" ");
+          return {
+            id: toSlug(name),
+            name,
+            image: image.url,
+            country: "Vietnam", // Thêm để đồng bộ với yêu cầu trước
+          };
+        });
 
-    const totalPages = Math.ceil(generals.length / limit);
-    if (page < 1 || page > totalPages) {
-      return { generals: [], totalPages };
-    }
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const paginatedGenerals = generals.slice(startIndex, endIndex);
+        console.log("getGenerals - Total generals:", generals.length);
 
-    return { generals: paginatedGenerals, totalPages };
-  } catch (error) {
-    console.error("Error fetching generals:", error);
-    return { generals: [], totalPages: 0 };
-  }
-}
+        const totalPages = Math.ceil(generals.length / limit);
 
-// Lấy thông tin một tướng cụ thể
-export async function getGeneral(slug: string): Promise<General | null> {
-  try {
-    const images = await getGeneralImages();
-    const image = images.find((img) => {
-      const name = img.name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]/g, " ")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-      return toSlug(name) === slug;
-    });
+        if (getAll) {
+          return { generals, totalPages };
+        }
 
-    if (image) {
-      const name = image.name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]/g, " ")
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-      return {
-        id: slug,
-        dynastyId: "unknown",
-        name,
-        image: image.url,
-        country: "Vietnam",
-      };
-    }
-    return null;
-  } catch (error) {
-    console.error("Error fetching general:", error);
-    return null;
-  }
+        if (page < 1 || page > totalPages) {
+          return { generals: [], totalPages };
+        }
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const paginatedGenerals = generals.slice(startIndex, endIndex);
+
+        return { generals: paginatedGenerals, totalPages };
+      } catch (error) {
+        console.error("Error fetching generals:", error);
+        return { generals: [], totalPages: 0 };
+      }
+    },
+    ["vietnam-generals", page.toString(), limit.toString(), getAll.toString()],
+    { revalidate: 60 } // Cache 60 giây để phản ánh ảnh mới nhanh hơn
+  );
+  return cachedGetGenerals(page, limit, getAll);
 }

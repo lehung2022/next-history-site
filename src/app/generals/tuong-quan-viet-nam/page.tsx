@@ -12,9 +12,9 @@ type PageProps = {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-const Page: FC<PageProps> = async ({ searchParams }) => {
+const VietnameseGeneralPage: FC<PageProps> = async ({ searchParams }) => {
   const resolvedSearchParams = await searchParams; // Await searchParams
   return <VietnameseGenerals searchParams={resolvedSearchParams} />;
 };
 
-export default Page;
+export default VietnameseGeneralPage;

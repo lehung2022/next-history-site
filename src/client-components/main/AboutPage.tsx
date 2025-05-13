@@ -18,7 +18,7 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col items-center px-6 py-4 text-white">
-      <div className="text-2xl sm:text-3xl bg-blue-700/50 sm:bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6 px-4 py-2 hover:bg-gray-900/70 transition-all duration-300 whitespace-nowrap mx-auto w-fit">
+      <div className="text-2xl sm:text-3xl bg-blue-700/50 sm:bg-gray-950/50 rounded-lg font-extrabold text-yellow-50 mb-6 px-4 py-2 hover:bg-gray-900/70 transition-all duration-300 whitespace-nowrap mt-2 mx-auto w-fit">
         About This Project
       </div>
       <p className="border border-yellow-500/50 rounded-lg text-lg bg-gray-950/50 text-white max-w-3xl text-center mb-6 p-4 sm:p-6 shadow-xl hover:bg-gray-900/70 hover:shadow-2xl transition-all duration-300">

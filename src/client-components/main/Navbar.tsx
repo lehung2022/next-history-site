@@ -1,3 +1,4 @@
+// This Navbar here is also relevant to the search page. 
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
