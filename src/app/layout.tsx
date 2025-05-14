@@ -47,6 +47,12 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="font-sans antialiased h-full min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1] bg-black/35">
           <Image

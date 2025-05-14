@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { domainLinks } from "@/client-components/sub/source-links";
+import { getDomainLinks } from "@/client-components/sub/source-links";
+import { Language } from "@/types/domain-links";
 
 type Source = {
   label: string;
@@ -9,13 +10,20 @@ type Source = {
 type AboutState = {
   imageSources: Source[];
   articleSources: Source[];
-  language: string;
-  setLanguage: (language: string) => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
 };
 
-export const useAboutStore = create<AboutState>((set) => ({
-  imageSources: domainLinks.imageSources,
-  articleSources: domainLinks.articleSources,
+export const useAboutStore = create<AboutState>((set, get) => ({
+  imageSources: getDomainLinks("Vietnamese").imageSources,
+  articleSources: getDomainLinks("Vietnamese").articleSources,
   language: "Vietnamese",
-  setLanguage: (language) => set({ language }),
+  setLanguage: (language) => {
+    const links = getDomainLinks(language);
+    set({
+      language,
+      imageSources: links.imageSources,
+      articleSources: links.articleSources,
+    });
+  },
 }));

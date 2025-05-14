@@ -37,7 +37,6 @@ export async function getGenerals(
             id: toSlug(name),
             name,
             image: image.url,
-            country: "Vietnam", // Thêm để đồng bộ với yêu cầu trước
           };
         });
 

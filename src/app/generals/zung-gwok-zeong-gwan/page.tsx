@@ -1,19 +1,20 @@
-import React from "react"; //for testing purposes, cannot be removed
+// app/generals/zung-gwok-zeong-gwan/page.tsx
+import { FC } from "react";
 import ChineseGenerals from "@/server-components/generals/ChineseGenerals";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Chinese Generals | Chronicles of Valor",
-  description: "Explore the greatest generals of each country",
+  description: "Explore the greatest generals of China",
 };
 
-const ZungGwokGenerals = () => {
-  return (
-    <>
-      {/* do not remove this fragment. You'll never know when you might need it */}
-      <ChineseGenerals />
-    </>
-  );
+type PageProps = {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 };
 
-export default ZungGwokGenerals;
+const ChineseGeneralPage: FC<PageProps> = async ({ searchParams }) => {
+  const resolvedSearchParams = await searchParams; // Await searchParams
+  return <ChineseGenerals searchParams={resolvedSearchParams} />;
+};
+
+export default ChineseGeneralPage;

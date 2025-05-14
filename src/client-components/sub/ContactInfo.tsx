@@ -22,18 +22,18 @@ const ContactInfo = () => {
       {/* Contact Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full text-center">
         {/* Email */}
-        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50">
+        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50 w-full">
           <FaEnvelope className="text-yellow-400 text-3xl" />
           <a
             href={`mailto:${contact.email}`}
-            className="hover:underline text-gray-300"
+            className="hover:underline text-gray-300 break-all max-w-full"
           >
             {contact.email}
           </a>
         </div>
 
         {/* Twitter */}
-        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50">
+        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50 w-full">
           <FaTwitter className="text-blue-400 text-3xl" />
           <a
             href={contact.twitter}
@@ -46,7 +46,7 @@ const ContactInfo = () => {
         </div>
 
         {/* Team */}
-        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50">
+        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50 w-full">
           <PiMicrosoftTeamsLogoFill className="text-blue-300 text-3xl" />
           <a
             href={contact.team}
@@ -57,8 +57,9 @@ const ContactInfo = () => {
             Team
           </a>
         </div>
+
         {/* Discord */}
-        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50">
+        <div className="flex flex-col items-center gap-2 border p-4 rounded-lg bg-slate-950/50 w-full">
           <FaDiscord className="text-blue-300 text-3xl" />
           <a
             href={contact.discord}

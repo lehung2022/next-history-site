@@ -34,7 +34,7 @@ const GeneralPage = () => {
           </p>
         </Link>
         <Link href="/generals/japan-shogun" className="group rounded-lg">
-          <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-amber-200 group-hover:bg-orange-300 group-active:bg-orange-300">
+          <div className="relative w-full aspect-[1/1] border-2 border-white rounded-lg bg-amber-200 group-hover:bg-orange-400 group-active:bg-orange-400">
             <Image
               src="/japanese_generals/Kosaka_Danjo_Masanobu.jpg"
               alt="Japan Period"
@@ -44,7 +44,7 @@ const GeneralPage = () => {
               quality={70}
             />
           </div>
-          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-orange-300 group-active:bg-orange-300 group-hover:text-black group-active:text-black transition-all duration-300">
+          <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-orange-400 group-active:bg-orange-400 group-hover:text-black group-active:text-black transition-all duration-300">
             Tướng quân Nhật Bản
           </p>
         </Link>

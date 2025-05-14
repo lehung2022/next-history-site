@@ -6,9 +6,11 @@ import { CiClock2 } from "react-icons/ci";
 import { FaEnvelope } from "react-icons/fa";
 import Link from "next/link";
 import { useAboutStore } from "@/store/about";
+import { Language } from "@/types/domain-links";
 
 const Footer = () => {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [clientLanguage, setClientLanguage] = useState<Language>("Vietnamese");
   const { language } = useAboutStore();
 
   useEffect(() => {
@@ -17,9 +19,28 @@ const Footer = () => {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    setClientLanguage(language);
+  }, [language]);
+
   const year = new Date().getFullYear();
-  const copyright = `©${year} Chronicles of Valor. All rights reserved.`;
-  const contactText = language === "Vietnamese" ? "Liên hệ" : "Contact Me";
+
+  const contactText =
+    {
+      Vietnamese: "Liên hệ",
+      Japanese: "連絡",
+      Cantonese: "聯絡",
+      English: "Contact",
+    }[clientLanguage] || "Contact";
+
+  const copyright =
+    {
+      Vietnamese: `©${year} biên niên sử quả cảm. Mọi quyền được bảo lưu.`,
+      Japanese: `©${year} ヴァロルのクロニクル。すべての権利を保有。`,
+      Cantonese: `©${year} 勇氣編年史。保留所有權利。`,
+      English: `©${year} Chronicles of Valor. All rights reserved.`,
+    }[clientLanguage] || `©${year} Chronicles of Valor. All rights reserved.`;
+
   const formattedDate = currentTime
     ? currentTime.toLocaleDateString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })
     : "Updating date...";

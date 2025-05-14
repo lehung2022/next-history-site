@@ -2,7 +2,7 @@
 import Search from "@/server-components/search/Search";
 import { Suspense } from "react";
 
-export const revalidate = 3600; // Cache trang 1 giờ
+export const revalidate = 60; 
 
 export default async function SearchPage({
   searchParams,

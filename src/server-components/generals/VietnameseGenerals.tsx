@@ -1,6 +1,7 @@
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { unstable_cache } from "next/cache";
 import { QueryClient } from "@tanstack/react-query";
 import { getGenerals } from "@/lib/generalsOne";
 import { General, toSlug } from "@/types/vietGenerals";
@@ -11,7 +12,7 @@ import {
   FiChevronsRight,
 } from "react-icons/fi";
 
-export const revalidate = 60; // ISR rebuild mỗi 60 giây
+export const revalidate = 60;
 
 const getPageRange = (
   currentPage: number,
@@ -52,21 +53,39 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        staleTime: 60_000, // Cache client-side 60 giây, đồng bộ với server
+        staleTime: 60_000,
       },
     },
   });
 
+  // Cache server-side cho getGenerals phân trang
+  const cachedGetGeneralsPage = unstable_cache(
+    async (page: number, limit: number) => {
+      return getGenerals(page, limit);
+    },
+    ["vietnam-generals", page.toString(), limit.toString()],
+    { revalidate: 60 }
+  );
+
+  // Cache server-side cho getGenerals tất cả
+  const cachedGetGeneralsAll = unstable_cache(
+    async () => {
+      return getGenerals(1, 0, true);
+    },
+    ["vietnam-generals", "all"],
+    { revalidate: 60 }
+  );
+
   // Prefetch trang hiện tại
   await queryClient.prefetchQuery({
     queryKey: ["vietnam-generals", page, limit],
-    queryFn: () => getGenerals(page, limit),
+    queryFn: () => cachedGetGeneralsPage(page, limit),
   });
 
-  // Lấy toàn bộ tướng để tính totalPages
+  // Prefetch tất cả tướng
   await queryClient.prefetchQuery({
     queryKey: ["vietnam-generals", "all"],
-    queryFn: () => getGenerals(1, 0, true),
+    queryFn: cachedGetGeneralsAll,
   });
 
   const { generals } = queryClient.getQueryData<{
@@ -97,7 +116,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
   if (page < totalPagesOverride) {
     await queryClient.prefetchQuery({
       queryKey: ["vietnam-generals", page + 1, limit],
-      queryFn: () => getGenerals(page + 1, limit),
+      queryFn: () => cachedGetGeneralsPage(page + 1, limit),
     });
   }
 
@@ -152,7 +171,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
                         className="object-contain rounded-lg transition-all duration-300"
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         quality={60}
-                        loading="lazy" // Tối ưu tải ảnh
+                        loading="lazy"
                       />
                     </div>
                   </div>
