@@ -14,7 +14,7 @@ type AboutState = {
   setLanguage: (language: Language) => void;
 };
 
-export const useAboutStore = create<AboutState>((set, get) => ({
+export const useAboutStore = create<AboutState>((set) => ({
   imageSources: getDomainLinks("Vietnamese").imageSources,
   articleSources: getDomainLinks("Vietnamese").articleSources,
   language: "Vietnamese",

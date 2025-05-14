@@ -2,6 +2,7 @@ import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
 import Footer from "@/client-components/main/Footer";
 import ErrorBoundary from "@/client-components/main/ErrorBoundary";
+import AudioPlayer from "@/client-components/sub/AudioPlayer";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -68,7 +69,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ErrorBoundary>
           <Navbar />
         </ErrorBoundary>
-        <main className="flex-grow mt-16 pb-6">{children}</main>
+        <main className="flex-grow mt-16 pb-8">{children}</main>
+        <div className="mx-auto my-4">
+          <AudioPlayer />
+        </div>
         <Footer />
       </body>
     </html>

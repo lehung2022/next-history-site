@@ -1,4 +1,3 @@
-// src/client-components/main/Footer.tsx
 "use client";
 import React, { useState, useEffect } from "react";
 import { BsCalendar2DateFill } from "react-icons/bs";
@@ -49,7 +48,7 @@ const Footer = () => {
     : "Updating time...";
 
   return (
-    <footer className="bg-transparent backdrop-blur-sm text-white p-4 w-full sticky bottom-0 z-10">
+    <footer className="bg-transparent backdrop-blur-sm text-white p-6 w-full sticky bottom-0 z-30">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
           <p>{copyright}</p>
