@@ -1,10 +1,9 @@
-// src/server-components/generals/ChineseGenerals.tsx
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { unstable_cache } from "next/cache";
 import { QueryClient } from "@tanstack/react-query";
-import { getChinaGenerals } from "@/lib/generalsThree";
+import { getChinaGenerals } from "@/lib/generals";
+import { cacheGenerals } from "@/lib/cache";
 import { ChinaGeneral, toChinaSlug } from "@/types/chinaGenerals";
 import {
   FiChevronLeft,
@@ -57,49 +56,62 @@ const ChineseGenerals: FC<ChineseGeneralsProps> = async ({ searchParams }) => {
     },
   });
 
-  // Cache server-side cho getGenerals phân trang
-  const cachedGetGeneralsPage = unstable_cache(
-    async (page: number, limit: number) => {
-      return getChinaGenerals(page, limit);
-    },
-    ["nihon-generals", page.toString(), limit.toString()],
-    { revalidate: 60 }
-  );
+  console.log("ChineseGenerals.tsx - Fetching data for page:", page);
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: ["zung-gwok-generals", page, limit],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getChinaGenerals,
+          "zung-gwok-generals",
+          page,
+          limit
+        )();
+        console.log("ChineseGenerals.tsx - Fetched page data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
 
-  // Cache server-side cho getGenerals tất cả
-  const cachedGetGeneralsAll = unstable_cache(
-    async () => {
-      return getChinaGenerals(1, 0, true);
-    },
-    ["nihon-generals", "all"],
-    { revalidate: 60 }
-  );
+    await queryClient.prefetchQuery({
+      queryKey: ["zung-gwok-generals", "all"],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getChinaGenerals,
+          "zung-gwok-generals",
+          1,
+          0,
+          true
+        )();
+        console.log("ChineseGenerals.tsx - Fetched all data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
+  } catch (error) {
+    console.error("ChineseGenerals.tsx - Error prefetching data:", error);
+  }
 
-  // Prefetch trang hiện tại
-  await queryClient.prefetchQuery({
-    queryKey: ["nihon-generals", page, limit],
-    queryFn: () => cachedGetGeneralsPage(page, limit),
-  });
-
-  // Prefetch tất cả tướng
-  await queryClient.prefetchQuery({
-    queryKey: ["nihon-generals", "all"],
-    queryFn: cachedGetGeneralsAll,
-  });
-
-  const { generals } = queryClient.getQueryData<{
+  const pageData = queryClient.getQueryData<{
     generals: ChinaGeneral[];
     totalPages: number;
-  }>(["nihon-generals", page, limit]) ?? { generals: [], totalPages: 0 };
-
-  const { generals: allGenerals } = queryClient.getQueryData<{
+  }>(["zung-gwok-generals", page, limit]) ?? { generals: [], totalPages: 0 };
+  const allData = queryClient.getQueryData<{
     generals: ChinaGeneral[];
     totalPages: number;
-  }>(["nihon-generals", "all"]) ?? { generals: [], totalPages: 0 };
-  const totalPagesOverride = Math.ceil(allGenerals.length / limit);
+  }>(["zung-gwok-generals", "all"]) ?? { generals: [], totalPages: 0 };
+
+  const generals = Array.isArray(pageData.generals) ? pageData.generals : [];
+  const allGenerals = Array.isArray(allData.generals) ? allData.generals : [];
+  const totalPagesOverride =
+    allGenerals.length > 0 ? Math.ceil(allGenerals.length / limit) : 0;
 
   console.log(
-    "JapaneseGenerals - Page:",
+    "ChineseGenerals - Page:",
     page,
     "Limit:",
     limit,
@@ -111,15 +123,55 @@ const ChineseGenerals: FC<ChineseGeneralsProps> = async ({ searchParams }) => {
     generals.map((g) => g.name)
   );
 
-  // Prefetch trang tiếp theo nếu có
   if (page < totalPagesOverride) {
-    await queryClient.prefetchQuery({
-      queryKey: ["nihon-generals", page + 1, limit],
-      queryFn: () => cachedGetGeneralsPage(page + 1, limit),
-    });
+    try {
+      console.log("ChineseGenerals.tsx - Prefetching next page:", page + 1);
+      await queryClient.prefetchQuery({
+        queryKey: ["zung-gwok-generals", page + 1, limit],
+        queryFn: async () => {
+          const result = await cacheGenerals(
+            getChinaGenerals,
+            "zung-gwok-generals",
+            page + 1,
+            limit
+          )();
+          console.log("ChineseGenerals.tsx - Fetched next page:", {
+            generalsCount: result.generals.length,
+            totalPages: result.totalPages,
+          });
+          return result;
+        },
+      });
+    } catch (error) {
+      console.error(
+        "ChineseGenerals.tsx - Error prefetching next page:",
+        error
+      );
+    }
   }
 
   const pageRange = getPageRange(page, totalPagesOverride);
+
+  if (generals.length === 0 && allGenerals.length === 0) {
+    return (
+      <div className="flex flex-col items-center text-gray-200">
+        <Link
+          href="/generals/"
+          className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-6 px-4 py-2 rounded-lg mb-4"
+        >
+          ← Quay về trang tướng quân
+        </Link>
+        <div className="px-2 xs:px-4 w-full max-w-4xl">
+          <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
+            Tướng Quân Trung Quốc
+          </div>
+          <p className="text-center text-base xs:text-lg text-red-400">
+            Không tải được danh sách tướng. Vui lòng kiểm tra Firebase Storage.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center text-gray-200">
@@ -158,7 +210,7 @@ const ChineseGenerals: FC<ChineseGeneralsProps> = async ({ searchParams }) => {
               {generals.map((general: ChinaGeneral) => (
                 <Link
                   key={general.id}
-                  href={`/bio/${toChinaSlug(general.name)}`}
+                  href={`/zung-gwok-zeong-gwan/bio/${toChinaSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-red-900 group-hover:border-red-900 active:bg-red-900 active:border-red-900 transition-all duration-300">
@@ -207,7 +259,7 @@ const ChineseGenerals: FC<ChineseGeneralsProps> = async ({ searchParams }) => {
                   <FiChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
               )}
-              {pageRange.map((p, index) =>
+              {pageRange.map((p: number | string, index: number) =>
                 p === "..." ? (
                   <span
                     key={`ellipsis-${index}`}

@@ -35,7 +35,7 @@ const Footer = () => {
   const copyright =
     {
       Vietnamese: `©${year} biên niên sử anh hùng. Mọi quyền được bảo lưu.`,
-      Japanese: `©${year} ヴァロルのクロニクル。すべての権利を保有。`,
+      Japanese: `©${year} ヴァロルのクロニクル。全ての権利を保有。`,
       Cantonese: `©${year} 勇氣編年史。保留所有權利。`,
       English: `©${year} Chronicles of Valor. All rights reserved.`,
     }[clientLanguage] || `©${year} Chronicles of Valor. All rights reserved.`;

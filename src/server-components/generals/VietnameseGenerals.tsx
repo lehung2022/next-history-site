@@ -1,9 +1,9 @@
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { unstable_cache } from "next/cache";
 import { QueryClient } from "@tanstack/react-query";
-import { getGenerals } from "@/lib/generalsOne";
+import { getGenerals } from "@/lib/generals";
+import { cacheGenerals } from "@/lib/cache";
 import { General, toSlug } from "@/types/vietGenerals";
 import {
   FiChevronLeft,
@@ -58,46 +58,59 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
     },
   });
 
-  // Cache server-side cho getGenerals phân trang
-  const cachedGetGeneralsPage = unstable_cache(
-    async (page: number, limit: number) => {
-      return getGenerals(page, limit);
-    },
-    ["vietnam-generals", page.toString(), limit.toString()],
-    { revalidate: 60 }
-  );
+  console.log("VietnameseGenerals.tsx - Fetching data for page:", page);
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: ["vietnam-generals", page, limit],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getGenerals,
+          "vietnam-generals",
+          page,
+          limit
+        )();
+        console.log("VietnameseGenerals.tsx - Fetched page data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
 
-  // Cache server-side cho getGenerals tất cả
-  const cachedGetGeneralsAll = unstable_cache(
-    async () => {
-      return getGenerals(1, 0, true);
-    },
-    ["vietnam-generals", "all"],
-    { revalidate: 60 }
-  );
+    await queryClient.prefetchQuery({
+      queryKey: ["vietnam-generals", "all"],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getGenerals,
+          "vietnam-generals",
+          1,
+          0,
+          true
+        )();
+        console.log("VietnameseGenerals.tsx - Fetched all data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
+  } catch (error) {
+    console.error("VietnameseGenerals.tsx - Error prefetching data:", error);
+  }
 
-  // Prefetch trang hiện tại
-  await queryClient.prefetchQuery({
-    queryKey: ["vietnam-generals", page, limit],
-    queryFn: () => cachedGetGeneralsPage(page, limit),
-  });
-
-  // Prefetch tất cả tướng
-  await queryClient.prefetchQuery({
-    queryKey: ["vietnam-generals", "all"],
-    queryFn: cachedGetGeneralsAll,
-  });
-
-  const { generals } = queryClient.getQueryData<{
+  const pageData = queryClient.getQueryData<{
     generals: General[];
     totalPages: number;
   }>(["vietnam-generals", page, limit]) ?? { generals: [], totalPages: 0 };
-
-  const { generals: allGenerals } = queryClient.getQueryData<{
+  const allData = queryClient.getQueryData<{
     generals: General[];
     totalPages: number;
   }>(["vietnam-generals", "all"]) ?? { generals: [], totalPages: 0 };
-  const totalPagesOverride = Math.ceil(allGenerals.length / limit);
+
+  const generals = Array.isArray(pageData.generals) ? pageData.generals : [];
+  const allGenerals = Array.isArray(allData.generals) ? allData.generals : [];
+  const totalPagesOverride =
+    allGenerals.length > 0 ? Math.ceil(allGenerals.length / limit) : 0;
 
   console.log(
     "VietnameseGenerals - Page:",
@@ -112,15 +125,55 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
     generals.map((g) => g.name)
   );
 
-  // Prefetch trang tiếp theo nếu có
   if (page < totalPagesOverride) {
-    await queryClient.prefetchQuery({
-      queryKey: ["vietnam-generals", page + 1, limit],
-      queryFn: () => cachedGetGeneralsPage(page + 1, limit),
-    });
+    try {
+      console.log("VietnameseGenerals.tsx - Prefetching next page:", page + 1);
+      await queryClient.prefetchQuery({
+        queryKey: ["vietnam-generals", page + 1, limit],
+        queryFn: async () => {
+          const result = await cacheGenerals(
+            getGenerals,
+            "vietnam-generals",
+            page + 1,
+            limit
+          )();
+          console.log("VietnameseGenerals.tsx - Fetched next page:", {
+            generalsCount: result.generals.length,
+            totalPages: result.totalPages,
+          });
+          return result;
+        },
+      });
+    } catch (error) {
+      console.error(
+        "VietnameseGenerals.tsx - Error prefetching next page:",
+        error
+      );
+    }
   }
 
   const pageRange = getPageRange(page, totalPagesOverride);
+
+  if (generals.length === 0 && allGenerals.length === 0) {
+    return (
+      <div className="flex flex-col items-center text-gray-200">
+        <Link
+          href="/generals/"
+          className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-6 px-4 py-2 rounded-lg mb-4"
+        >
+          ← Quay về trang tướng quân
+        </Link>
+        <div className="px-2 xs:px-4 w-full max-w-4xl">
+          <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
+            Tướng Quân Việt Nam
+          </div>
+          <p className="text-center text-base xs:text-lg text-red-400">
+            Không tải được danh sách tướng. Vui lòng kiểm tra Firebase Storage.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center text-gray-200">
@@ -159,7 +212,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               {generals.map((general: General) => (
                 <Link
                   key={general.id}
-                  href={`/bio/${toSlug(general.name)}`}
+                  href={`/tuong-quan-viet-nam/bio/${toSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-yellow-500 group-hover:border-yellow-300 active:bg-yellow-500 active:border-yellow-300 transition-all duration-300">

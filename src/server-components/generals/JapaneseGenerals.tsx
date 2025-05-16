@@ -1,10 +1,9 @@
-// src/server-components/generals/JapaneseGenerals.tsx
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { unstable_cache } from "next/cache";
 import { QueryClient } from "@tanstack/react-query";
-import { getJapanGenerals } from "@/lib/generalsTwo";
+import { getJapanGenerals } from "@/lib/generals";
+import { cacheGenerals } from "@/lib/cache";
 import { JapanGeneral, toJapanSlug } from "@/types/japanGenerals";
 import {
   FiChevronLeft,
@@ -59,46 +58,59 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
     },
   });
 
-  // Cache server-side cho getGenerals phân trang
-  const cachedGetGeneralsPage = unstable_cache(
-    async (page: number, limit: number) => {
-      return getJapanGenerals(page, limit);
-    },
-    ["nihon-generals", page.toString(), limit.toString()],
-    { revalidate: 60 }
-  );
+  console.log("JapaneseGenerals.tsx - Fetching data for page:", page);
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: ["nihon-generals", page, limit],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getJapanGenerals,
+          "nihon-generals",
+          page,
+          limit
+        )();
+        console.log("JapaneseGenerals.tsx - Fetched page data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
 
-  // Cache server-side cho getGenerals tất cả
-  const cachedGetGeneralsAll = unstable_cache(
-    async () => {
-      return getJapanGenerals(1, 0, true);
-    },
-    ["nihon-generals", "all"],
-    { revalidate: 60 }
-  );
+    await queryClient.prefetchQuery({
+      queryKey: ["nihon-generals", "all"],
+      queryFn: async () => {
+        const result = await cacheGenerals(
+          getJapanGenerals,
+          "nihon-generals",
+          1,
+          0,
+          true
+        )();
+        console.log("JapaneseGenerals.tsx - Fetched all data:", {
+          generalsCount: result.generals.length,
+          totalPages: result.totalPages,
+        });
+        return result;
+      },
+    });
+  } catch (error) {
+    console.error("JapaneseGenerals.tsx - Error prefetching data:", error);
+  }
 
-  // Prefetch trang hiện tại
-  await queryClient.prefetchQuery({
-    queryKey: ["nihon-generals", page, limit],
-    queryFn: () => cachedGetGeneralsPage(page, limit),
-  });
-
-  // Prefetch tất cả tướng
-  await queryClient.prefetchQuery({
-    queryKey: ["nihon-generals", "all"],
-    queryFn: cachedGetGeneralsAll,
-  });
-
-  const { generals } = queryClient.getQueryData<{
+  const pageData = queryClient.getQueryData<{
     generals: JapanGeneral[];
     totalPages: number;
   }>(["nihon-generals", page, limit]) ?? { generals: [], totalPages: 0 };
-
-  const { generals: allGenerals } = queryClient.getQueryData<{
+  const allData = queryClient.getQueryData<{
     generals: JapanGeneral[];
     totalPages: number;
   }>(["nihon-generals", "all"]) ?? { generals: [], totalPages: 0 };
-  const totalPagesOverride = Math.ceil(allGenerals.length / limit);
+
+  const generals = Array.isArray(pageData.generals) ? pageData.generals : [];
+  const allGenerals = Array.isArray(allData.generals) ? allData.generals : [];
+  const totalPagesOverride =
+    allGenerals.length > 0 ? Math.ceil(allGenerals.length / limit) : 0;
 
   console.log(
     "JapaneseGenerals - Page:",
@@ -113,15 +125,54 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
     generals.map((g) => g.name)
   );
 
-  // Prefetch trang tiếp theo nếu có
   if (page < totalPagesOverride) {
-    await queryClient.prefetchQuery({
-      queryKey: ["nihon-generals", page + 1, limit],
-      queryFn: () => cachedGetGeneralsPage(page + 1, limit),
-    });
+    try {
+      console.log("JapaneseGenerals.tsx - Prefetching next page:", page + 1);
+      await queryClient.prefetchQuery({
+        queryKey: ["nihon-generals", page + 1, limit],
+        queryFn: async () => {
+          const result = await cacheGenerals(
+            getJapanGenerals,
+            "nihon-generals",
+            page + 1,
+            limit
+          )();
+          console.log("JapaneseGenerals.tsx - Fetched next page:", {
+            generalsCount: result.generals.length,
+            totalPages: result.totalPages,
+          });
+          return result;
+        },
+      });
+    } catch (error) {
+      console.error(
+        "JapaneseGenerals.tsx - Error prefetching next page:",
+        error
+      );
+    }
   }
 
-  const pageRange = getPageRange(page, totalPagesOverride);
+
+  if (generals.length === 0 && allGenerals.length === 0) {
+    return (
+      <div className="flex flex-col items-center text-gray-200">
+        <Link
+          href="/generals/"
+          className="text-white bg-transparent border border-gray-300 hover:bg-red-700 active:bg-red-700 mt-6 px-4 py-2 rounded-lg mb-4"
+        >
+          ← Quay về trang tướng quân
+        </Link>
+        <div className="px-2 xs:px-4 w-full max-w-4xl">
+          <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
+            Tướng Quân Nhật Bản
+          </div>
+          <p className="text-center text-base xs:text-lg text-red-400">
+            Không tải được danh sách tướng. Vui lòng kiểm tra Firebase Storage.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center text-gray-200">
@@ -160,7 +211,7 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
               {generals.map((general: JapanGeneral) => (
                 <Link
                   key={general.id}
-                  href={`/bio/${toJapanSlug(general.name)}`}
+                  href={`/japan-shogun/bio/${toJapanSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-orange-400 group-hover:border-orange-400 active:bg-orange-400 active:border-orange-400 transition-all duration-300">
@@ -209,28 +260,29 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
                   <FiChevronLeft className="w-4 h-4 xs:w-5 xs:h-5" />
                 </Link>
               )}
-              {pageRange.map((p, index) =>
-                p === "..." ? (
-                  <span
-                    key={`ellipsis-${index}`}
-                    className="px-1.5 xs:px-2 py-0.5 xs:py-1 flex items-center text-xs xs:text-sm"
-                  >
-                    ...
-                  </span>
-                ) : (
-                  <Link
-                    key={`page-${p}-${index}`}
-                    href={`/generals/japan-shogun?page=${p}`}
-                    scroll={false}
-                    className={`px-2 xs:px-3 py-0.5 xs:py-1 rounded-lg border-2 border-white text-xs xs:text-sm ${
-                      p === page
-                        ? "bg-red-900 text-white"
-                        : "bg-black/50 hover:bg-red-700 active:bg-red-700 text-gray-200"
-                    }`}
-                  >
-                    {p}
-                  </Link>
-                )
+              {getPageRange(page, totalPagesOverride).map(
+                (p: number | string, index: number) =>
+                  p === "..." ? (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="px-1.5 xs:px-2 py-0.5 xs:py-1 flex items-center text-xs xs:text-sm"
+                    >
+                      ...
+                    </span>
+                  ) : (
+                    <Link
+                      key={`page-${p}-${index}`}
+                      href={`/generals/japan-shogun?page=${p}`}
+                      scroll={false}
+                      className={`px-2 xs:px-3 py-0.5 xs:py-1 rounded-lg border-2 border-white text-xs xs:text-sm ${
+                        p === page
+                          ? "bg-red-900 text-white"
+                          : "bg-black/50 hover:bg-red-700 active:bg-red-700 text-gray-200"
+                      }`}
+                    >
+                      {p}
+                    </Link>
+                  )
               )}
               {page >= totalPagesOverride ? (
                 <span className="p-1.5 xs:p-2 rounded-lg border-2 border-white bg-black/50 opacity-50 cursor-not-allowed flex items-center">

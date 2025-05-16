@@ -7,7 +7,7 @@ const Homepage = () => {
     <div className="flex flex-col items-center text-white">
       <div className="px-4">
         <div className="text-2xl font-bold my-4 mt-6 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
-          Chọn số mệnh của bạn
+          Chọn cánh cổng của bạn
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full max-w-5xl px-4">

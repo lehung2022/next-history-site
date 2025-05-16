@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
 import Footer from "@/client-components/main/Footer";
+import Head from "next/head";
 import ErrorBoundary from "@/client-components/main/ErrorBoundary";
 import AudioPlayer from "@/client-components/sub/AudioPlayer";
 import type { Metadata } from "next";
@@ -48,12 +49,12 @@ type RootLayoutProps = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="h-full">
-      <head>
+      <Head>
         <link
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap"
           rel="stylesheet"
         />
-      </head>
+      </Head>
       <body className="font-sans antialiased h-full min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1] bg-black/35">
           <Image

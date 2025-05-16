@@ -13,13 +13,10 @@ export function cacheGenerals<T>(
   limit: number = 0,
   getAll: boolean = false
 ) {
+  const cacheKey = [prefix, page.toString(), limit.toString(), getAll.toString()];
   return unstable_cache(
     async () => {
-      console.log(`cache.ts - Fetching data for ${prefix}:`, {
-        page,
-        limit,
-        getAll,
-      });
+      console.log(`cache.ts - Cache miss for ${prefix}, key:`, cacheKey);
       const result = await fetchFn(page, limit, getAll);
       console.log(`cache.ts - Cached result for ${prefix}:`, {
         page,
@@ -30,7 +27,7 @@ export function cacheGenerals<T>(
       });
       return result;
     },
-    [prefix, page.toString(), limit.toString(), getAll.toString()],
-    { revalidate: 60 } // Đồng bộ với *.tsx
+    cacheKey,
+    { revalidate: 60 }
   );
 }

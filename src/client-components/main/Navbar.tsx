@@ -1,12 +1,10 @@
-// This Navbar here is also relevant to the search page. 
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/store/search";
-// import { useAboutStore } from "@/store/about";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -28,11 +26,13 @@ const navItems = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { query, setQuery } = useSearchStore();
-  // const { language } = useAboutStore();
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const { query, setQuery, history, addQuery, clearHistory } = useSearchStore();
   const router = useRouter();
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const desktopInputWrapperRef = useRef<HTMLDivElement>(null);
+  const mobileInputWrapperRef = useRef<HTMLDivElement>(null);
 
   // Set focus cho input desktop khi mount
   useEffect(() => {
@@ -48,18 +48,54 @@ const Navbar = () => {
     }
   }, [isSearchOpen]);
 
+  // Đóng history dropdown khi click ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      console.log(
+        "Click outside - desktop ref:",
+        desktopInputWrapperRef.current
+      );
+      console.log("Click outside - mobile ref:", mobileInputWrapperRef.current);
+      console.log("Click target:", event.target);
+      if (
+        (desktopInputWrapperRef.current &&
+          !desktopInputWrapperRef.current.contains(event.target as Node)) ||
+        (mobileInputWrapperRef.current &&
+          !mobileInputWrapperRef.current.contains(event.target as Node))
+      ) {
+        console.log("Closing dropdown due to click outside");
+        setIsHistoryOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
-  const closeSearch = () => setIsSearchOpen(false);
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setIsHistoryOpen(false);
+  };
 
   const handleSearchSubmit = () => {
     if (!query.trim()) {
       alert("Vui lòng nhập từ khóa tìm kiếm!");
       return;
     }
+    addQuery(query);
     router.push(`/search?query=${encodeURIComponent(query)}`);
     setQuery("");
+    closeSearch();
+    setIsHistoryOpen(false);
+  };
+
+  const handleHistoryClick = (q: string) => {
+    setQuery(q);
+    addQuery(q);
+    router.push(`/search?query=${encodeURIComponent(q)}`);
+    setIsHistoryOpen(false);
     closeSearch();
   };
 
@@ -72,7 +108,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="bg-transparent backdrop-blur-sm text-white p-4 fixed w-full top-0 z-20">
+      <nav className="bg-transparent backdrop-blur-sm text-white p-4 pl-1 fixed w-full top-0 z-20">
         <div className="flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-2 min-w-[320px]">
           <div className="relative flex items-center justify-between w-full">
             <div className="flex-shrink-0 w-12">
@@ -95,13 +131,18 @@ const Navbar = () => {
                 Chronicles of Valor
               </Link>
             </div>
-            <div className="hidden md:flex items-center flex-shrink-0 w-48 relative">
+            <div
+              className="hidden md:flex items-center flex-shrink-0 w-48 relative"
+              ref={desktopInputWrapperRef}
+            >
               <input
                 ref={desktopInputRef}
                 type="text"
                 placeholder={placeholder}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onClick={() => history.length > 0 && setIsHistoryOpen(true)}
+                onBlur={() => setIsHistoryOpen(false)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
                 className={desktopInputClassName}
               />
@@ -111,6 +152,38 @@ const Navbar = () => {
                 className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
                 onClick={handleSearchSubmit}
               />
+              <AnimatePresence>
+                {isHistoryOpen && history.length > 0 && (
+                  <MotionDiv
+                    className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                  >
+                    {history.map((q) => (
+                      <div
+                        key={q}
+                        className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate"
+                        onClick={() => handleHistoryClick(q)}
+                      >
+                        {q}
+                      </div>
+                    ))}
+                    <div
+                      className="px-2 py-1 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
+                      onClick={() => {
+                        clearHistory();
+                        setIsHistoryOpen(false);
+                      }}
+                    >
+                      <FaTimes size={12} className="mr-1" />
+                      Xóa lịch sử
+                    </div>
+                  </MotionDiv>
+                )}
+              </AnimatePresence>
             </div>
             <div className="md:hidden flex items-center flex-shrink-0 w-12 justify-end">
               <FaSearch
@@ -154,7 +227,7 @@ const Navbar = () => {
             >
               ✕
             </button>
-            <div className="flex flex-col justify-center items-center gap-6 h-full">
+            <div className="flex flex-col justify-start mt-12 items-center gap-6 h-full">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -179,7 +252,10 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            onClick={closeSearch}
+            onClick={() => {
+              setIsHistoryOpen(false);
+              closeSearch();
+            }}
           />
         )}
       </AnimatePresence>
@@ -204,6 +280,7 @@ const Navbar = () => {
             <div
               className="flex justify-center w-full mt-12 p-4"
               onClick={(e) => e.stopPropagation()}
+              ref={mobileInputWrapperRef}
             >
               <div className="relative w-full max-w-md">
                 <input
@@ -212,9 +289,43 @@ const Navbar = () => {
                   placeholder={placeholder}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
+                  onClick={() => history.length > 0 && setIsHistoryOpen(true)}
+                  onBlur={() => setIsHistoryOpen(false)}
                   onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
                   className={mobileInputClassName}
                 />
+                <AnimatePresence>
+                  {isHistoryOpen && history.length > 0 && (
+                    <MotionDiv
+                      className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
+                      {history.map((q) => (
+                        <div
+                          key={q}
+                          className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate"
+                          onClick={() => handleHistoryClick(q)}
+                        >
+                          {q}
+                        </div>
+                      ))}
+                      <div
+                        className="px-2 py-1 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
+                        onClick={() => {
+                          clearHistory();
+                          setIsHistoryOpen(false);
+                        }}
+                      >
+                        <FaTimes size={12} className="mr-1" />
+                        Xóa lịch sử
+                      </div>
+                    </MotionDiv>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </MotionDiv>
