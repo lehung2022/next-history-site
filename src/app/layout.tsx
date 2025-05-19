@@ -1,11 +1,18 @@
+import { Roboto } from "next/font/google";
 import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
 import Footer from "@/client-components/main/Footer";
-import Head from "next/head";
 import ErrorBoundary from "@/client-components/main/ErrorBoundary";
 import AudioPlayer from "@/client-components/sub/AudioPlayer";
 import type { Metadata } from "next";
 import "./globals.css";
+
+const roboto = Roboto({
+  weight: "400", // or [400, 700] for multiple weights
+  style: "normal", // or ['normal', 'italic'] for multiple styles
+  subsets: ["latin"], // or ['latin', 'cyrillic']
+  display: "swap", // optional, but recommended
+});
 
 export const metadata: Metadata = {
   title: "Chronicles of Valor",
@@ -48,13 +55,7 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" className="h-full">
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
+    <html lang="en" className={`${roboto.className} h-full`}>
       <body className="font-sans antialiased h-full min-h-screen flex flex-col relative">
         <div className="fixed inset-0 z-[-1] bg-black/35">
           <Image

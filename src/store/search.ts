@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 
 type SearchState = {
   query: string;
@@ -7,25 +6,25 @@ type SearchState = {
   setQuery: (query: string) => void;
   addQuery: (query: string) => void;
   clearHistory: () => void;
+  removeQuery: (query: string) => void;
 };
 
-export const useSearchStore = create<SearchState>()(
-  persist(
-    (set) => ({
-      query: "",
-      history: [],
-      setQuery: (query) => set({ query }),
-      addQuery: (query) =>
-        set((state) => {
-          if (!query.trim() || state.history.includes(query)) return state;
-          return { history: [query, ...state.history.slice(0, 4)] }; // Giới hạn 5 query
-        }),
-      clearHistory: () => set({ history: [] }),
-    }),
-    {
-      name: "search-storage",
-      storage: createJSONStorage(() => localStorage),
-    }
-  )
-);
-// This is for searcch purpose in Navbar. The files is "search.ts"
+export const useSearchStore = create<SearchState>((set) => {
+  console.log("Search store initialized");
+  return {
+    query: "",
+    history: [],
+    setQuery: (query) => set({ query }),
+    addQuery: (query) =>
+      set((state) => {
+        const newHistory = [...new Set([query, ...state.history])].slice(0, 10);
+        console.log("addQuery - New history:", newHistory);
+        return { history: newHistory };
+      }),
+    clearHistory: () => set({ history: [] }),
+    removeQuery: (query) =>
+      set((state) => ({
+        history: state.history.filter((q) => q !== query),
+      })),
+  };
+});

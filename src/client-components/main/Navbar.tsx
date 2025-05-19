@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
@@ -15,7 +15,12 @@ const AnimatePresence = dynamic(
   { ssr: false }
 );
 
-const navItems = [
+type NavItem = {
+  href: string;
+  label: string;
+};
+
+const navItems: NavItem[] = [
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
   { href: "/dynasties", label: "Dynasties" },
@@ -27,43 +32,34 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const { query, setQuery, history, addQuery, clearHistory } = useSearchStore();
+  const [isSearching, setIsSearching] = useState(false);
+  const { query, setQuery, history, addQuery, clearHistory, removeQuery } =
+    useSearchStore();
   const router = useRouter();
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
   const desktopInputWrapperRef = useRef<HTMLDivElement>(null);
   const mobileInputWrapperRef = useRef<HTMLDivElement>(null);
 
-  // Set focus cho input desktop khi mount
+  // Handle input focus for desktop and mobile
   useEffect(() => {
-    if (desktopInputRef.current && window.innerWidth >= 768) {
+    if (window.innerWidth >= 768 && desktopInputRef.current) {
       desktopInputRef.current.focus();
     }
-  }, []);
-
-  // Set focus cho input mobile khi search overlay mở
-  useEffect(() => {
     if (isSearchOpen && mobileInputRef.current) {
       mobileInputRef.current.focus();
     }
   }, [isSearchOpen]);
 
-  // Đóng history dropdown khi click ra ngoài
+  // Close history dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      console.log(
-        "Click outside - desktop ref:",
-        desktopInputWrapperRef.current
-      );
-      console.log("Click outside - mobile ref:", mobileInputWrapperRef.current);
-      console.log("Click target:", event.target);
       if (
         (desktopInputWrapperRef.current &&
           !desktopInputWrapperRef.current.contains(event.target as Node)) ||
         (mobileInputWrapperRef.current &&
           !mobileInputWrapperRef.current.contains(event.target as Node))
       ) {
-        console.log("Closing dropdown due to click outside");
         setIsHistoryOpen(false);
       }
     };
@@ -71,33 +67,40 @@ const Navbar = () => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
-  const closeSearch = () => {
+  const toggleMenu = useCallback(() => setIsOpen((prev) => !prev), []);
+  const closeMenu = useCallback(() => setIsOpen(false), []);
+  const toggleSearch = useCallback(() => setIsSearchOpen((prev) => !prev), []);
+  const closeSearch = useCallback(() => {
     setIsSearchOpen(false);
     setIsHistoryOpen(false);
-  };
+  }, []);
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = useCallback(async () => {
     if (!query.trim()) {
       alert("Vui lòng nhập từ khóa tìm kiếm!");
       return;
     }
+    setIsSearching(true);
     addQuery(query);
-    router.push(`/search?query=${encodeURIComponent(query)}`);
+    await router.push(`/search?query=${encodeURIComponent(query)}`);
+    setIsSearching(false);
     setQuery("");
     closeSearch();
     setIsHistoryOpen(false);
-  };
+  }, [query, addQuery, router, closeSearch, setQuery]);
 
-  const handleHistoryClick = (q: string) => {
-    setQuery(q);
-    addQuery(q);
-    router.push(`/search?query=${encodeURIComponent(q)}`);
-    setIsHistoryOpen(false);
-    closeSearch();
-  };
+  const handleHistoryClick = useCallback(
+    async (q: string) => {
+      addQuery(q);
+      setIsSearching(true);
+      await router.push(`/search?query=${encodeURIComponent(q)}`);
+      setIsSearching(false);
+      setQuery("");
+      setIsHistoryOpen(false);
+      closeSearch();
+    },
+    [addQuery, router, closeSearch, setQuery]
+  );
 
   const placeholder = "Tìm kiếm...";
 
@@ -139,20 +142,28 @@ const Navbar = () => {
                 ref={desktopInputRef}
                 type="text"
                 placeholder={placeholder}
-                value={query}
+                value={query || ""}
                 onChange={(e) => setQuery(e.target.value)}
                 onClick={() => history.length > 0 && setIsHistoryOpen(true)}
                 onBlur={() => setIsHistoryOpen(false)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearchSubmit();
+                }}
                 className={desktopInputClassName}
               />
-              <FaSearch
-                size={16}
-                aria-label="Search"
-                className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                onClick={handleSearchSubmit}
-              />
-              <AnimatePresence>
+              {isSearching ? (
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 animate-spin">
+                  ⏳
+                </div>
+              ) : (
+                <FaSearch
+                  size={16}
+                  aria-label="Search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                  onClick={handleSearchSubmit}
+                />
+              )}
+              <AnimatePresence mode="wait">
                 {isHistoryOpen && history.length > 0 && (
                   <MotionDiv
                     className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
@@ -165,16 +176,27 @@ const Navbar = () => {
                     {history.map((q) => (
                       <div
                         key={q}
-                        className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate"
-                        onClick={() => handleHistoryClick(q)}
+                        className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate flex items-center justify-between"
                       >
-                        {q}
+                        <span
+                          onClick={() => handleHistoryClick(q)}
+                          className="flex-1 truncate"
+                        >
+                          {q}
+                        </span>
+                        <FaTimes
+                          size={12}
+                          className="ml-2 text-gray-400 hover:text-white cursor-pointer"
+                          onClick={() => removeQuery(q)}
+                          aria-label={`Remove ${q} from history`}
+                        />
                       </div>
                     ))}
                     <div
                       className="px-2 py-1 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
                       onClick={() => {
                         clearHistory();
+                        setQuery("");
                         setIsHistoryOpen(false);
                       }}
                     >
@@ -197,7 +219,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <MotionDiv
             data-testid="overlay"
@@ -211,14 +233,14 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isOpen && (
           <MotionDiv
             className="fixed top-0 left-0 bg-gray-800/50 text-white flex flex-col items-center gap-6 py-6 z-40 w-full md:w-64 h-screen"
             initial={{ x: "-100%" }}
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <button
               onClick={closeMenu}
@@ -243,7 +265,7 @@ const Navbar = () => {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isSearchOpen && (
           <MotionDiv
             data-testid="search-bg-overlay"
@@ -252,15 +274,12 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            onClick={() => {
-              setIsHistoryOpen(false);
-              closeSearch();
-            }}
+            onClick={closeSearch}
           />
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isSearchOpen && (
           <MotionDiv
             data-testid="search-overlay"
@@ -268,7 +287,7 @@ const Navbar = () => {
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <button
               onClick={closeSearch}
@@ -287,16 +306,31 @@ const Navbar = () => {
                   ref={mobileInputRef}
                   type="text"
                   placeholder={placeholder}
-                  value={query}
+                  value={query || ""}
                   onChange={(e) => setQuery(e.target.value)}
                   onClick={() => history.length > 0 && setIsHistoryOpen(true)}
                   onBlur={() => setIsHistoryOpen(false)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSearchSubmit()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSearchSubmit();
+                  }}
                   className={mobileInputClassName}
                 />
-                <AnimatePresence>
+                {isSearching ? (
+                  <div className="absolute right-2 top-1/2 -translate-y-1/2 animate-spin">
+                    ⏳
+                  </div>
+                ) : (
+                  <FaSearch
+                    size={16}
+                    aria-label="Search"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                    onClick={handleSearchSubmit}
+                  />
+                )}
+                <AnimatePresence mode="wait">
                   {isHistoryOpen && history.length > 0 && (
                     <MotionDiv
+                      key={history.join(",")}
                       className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -307,16 +341,27 @@ const Navbar = () => {
                       {history.map((q) => (
                         <div
                           key={q}
-                          className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate"
-                          onClick={() => handleHistoryClick(q)}
+                          className="px-2 py-2 text-white hover:bg-gray-700 cursor-pointer truncate flex items-center justify-between"
                         >
-                          {q}
+                          <span
+                            onClick={() => handleHistoryClick(q)}
+                            className="flex-1 truncate"
+                          >
+                            {q}
+                          </span>
+                          <FaTimes
+                            size={12}
+                            className="ml-2 text-gray-400 hover:text-white cursor-pointer"
+                            onClick={() => removeQuery(q)}
+                            aria-label={`Remove ${q} from history`}
+                          />
                         </div>
                       ))}
                       <div
-                        className="px-2 py-1 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
+                        className="px-2 py-2 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
                         onClick={() => {
                           clearHistory();
+                          setQuery("");
                           setIsHistoryOpen(false);
                         }}
                       >

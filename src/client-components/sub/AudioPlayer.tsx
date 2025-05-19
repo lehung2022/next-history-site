@@ -16,6 +16,10 @@ const playlist = [
   { src: "/audio/guardians-at-the-gates.mp3", title: "Guardians at the Gates" },
   { src: "/audio/heroic-song.mp3", title: "Heroic Song" },
   { src: "/audio/lost-raiders.mp3", title: "Lost Raiders" },
+  { src: "/audio/Twelve-Titans-Music_Act-Of-Will.mp3", title: "Act of Will" },
+  { src: "/audio/Twelve-Titans-Music_Protect-Us-From-Evil.mp3", title: "Protect us from Evil" },
+  { src: "/audio/Victory-Epic-Remix.mp3", title: "Victory" },
+  { src: "/audio/The-Yellow-Heaven.mp3", title: "Yellow Heaven" },
   { src: "/audio/main-theme-samanosuke.mp3", title: "Samanosuke Theme" },
   { src: "/audio/we-rise.mp3", title: "We Rise" },
 ];
