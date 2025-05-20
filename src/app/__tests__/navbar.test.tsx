@@ -17,7 +17,7 @@ jest.mock("framer-motion", () => ({
 }));
 
 // Mock useSearchStore
-interface SearchState {
+type SearchState = {
   query: string;
   history: string[];
   setQuery: jest.Mock;
