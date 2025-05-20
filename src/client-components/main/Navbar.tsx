@@ -1,11 +1,10 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { FaBars, FaSearch } from "react-icons/fa";
+import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/store/search";
-import Dropdown from "@/client-components/sub/Dropdown";
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -164,19 +163,49 @@ const Navbar = () => {
                   onClick={handleSearchSubmit}
                 />
               )}
-              {isHistoryOpen && (
-                <Dropdown
-                  history={history}
-                  onHistoryClick={handleHistoryClick}
-                  onRemoveQuery={removeQuery}
-                  onClearHistory={() => {
-                    clearHistory();
-                    setQuery("");
-                    setIsHistoryOpen(false);
-                  }}
-                  isMobile={false}
-                />
-              )}
+              <AnimatePresence mode="wait">
+                {isHistoryOpen && history.length > 0 && (
+                  <MotionDiv
+                    className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                  >
+                    {history.map((q) => (
+                      <div
+                        key={q}
+                        className="px-2 py-1 text-white hover:bg-gray-700 cursor-pointer truncate flex items-center justify-between"
+                      >
+                        <span
+                          onClick={() => handleHistoryClick(q)}
+                          className="flex-1 truncate"
+                        >
+                          {q}
+                        </span>
+                        <FaTimes
+                          size={12}
+                          className="ml-2 text-gray-400 hover:text-white cursor-pointer"
+                          onClick={() => removeQuery(q)}
+                          aria-label={`Remove ${q} from history`}
+                        />
+                      </div>
+                    ))}
+                    <div
+                      className="px-2 py-1 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
+                      onClick={() => {
+                        clearHistory();
+                        setQuery("");
+                        setIsHistoryOpen(false);
+                      }}
+                    >
+                      <FaTimes size={12} className="mr-1" />
+                      Xóa lịch sử
+                    </div>
+                  </MotionDiv>
+                )}
+              </AnimatePresence>
             </div>
             <div className="md:hidden flex items-center flex-shrink-0 w-12 justify-end">
               <FaSearch
@@ -298,19 +327,50 @@ const Navbar = () => {
                     onClick={handleSearchSubmit}
                   />
                 )}
-                {isHistoryOpen && (
-                  <Dropdown
-                    history={history}
-                    onHistoryClick={handleHistoryClick}
-                    onRemoveQuery={removeQuery}
-                    onClearHistory={() => {
-                      clearHistory();
-                      setQuery("");
-                      setIsHistoryOpen(false);
-                    }}
-                    isMobile={true}
-                  />
-                )}
+                <AnimatePresence mode="wait">
+                  {isHistoryOpen && history.length > 0 && (
+                    <MotionDiv
+                      key={history.join(",")}
+                      className="absolute top-full left-0 w-full bg-gray-800 rounded-md mt-1 z-30"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
+                      {history.map((q) => (
+                        <div
+                          key={q}
+                          className="px-2 py-2 text-white hover:bg-gray-700 cursor-pointer truncate flex items-center justify-between"
+                        >
+                          <span
+                            onClick={() => handleHistoryClick(q)}
+                            className="flex-1 truncate"
+                          >
+                            {q}
+                          </span>
+                          <FaTimes
+                            size={12}
+                            className="ml-2 text-gray-400 hover:text-white cursor-pointer"
+                            onClick={() => removeQuery(q)}
+                            aria-label={`Remove ${q} from history`}
+                          />
+                        </div>
+                      ))}
+                      <div
+                        className="px-2 py-2 text-sm text-gray-400 hover:bg-gray-700 cursor-pointer flex items-center"
+                        onClick={() => {
+                          clearHistory();
+                          setQuery("");
+                          setIsHistoryOpen(false);
+                        }}
+                      >
+                        <FaTimes size={12} className="mr-1" />
+                        Xóa lịch sử
+                      </div>
+                    </MotionDiv>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </MotionDiv>
