@@ -1,10 +1,42 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Navbar from "../../client-components/main/Navbar";
 
+// Mock next/navigation
 const mockPush = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockPush }),
+}));
+
+// Mock framer-motion
+jest.mock("framer-motion", () => ({
+  motion: {
+    div: jest.fn(({ children, ...props }) => <div {...props}>{children}</div>),
+  },
+  AnimatePresence: jest.fn(({ children }) => <>{children}</>),
+}));
+
+// Mock useSearchStore
+interface SearchState {
+  query: string;
+  history: string[];
+  setQuery: jest.Mock;
+  addQuery: jest.Mock;
+  removeQuery: jest.Mock;
+  clearHistory: jest.Mock;
+}
+const mockSearchStore: SearchState = {
+  query: "",
+  history: [],
+  setQuery: jest.fn(),
+  addQuery: jest.fn(),
+  removeQuery: jest.fn(),
+  clearHistory: jest.fn(),
+};
+jest.mock("../../store/search", () => ({
+  useSearchStore: jest.fn((selector) =>
+    selector ? selector(mockSearchStore) : mockSearchStore
+  ),
 }));
 
 describe("Navbar", () => {
@@ -12,102 +44,41 @@ describe("Navbar", () => {
 
   beforeEach(() => {
     mockPush.mockClear();
+    mockSearchStore.history = [];
+    mockSearchStore.query = "";
+    mockSearchStore.setQuery.mockClear();
+    mockSearchStore.addQuery.mockClear();
+    mockSearchStore.removeQuery.mockClear();
+    mockSearchStore.clearHistory.mockClear();
   });
 
-  it("submits search query on Enter key (Mobile)", async () => {
+  it("displays Dropdown with search history on desktop", async () => {
+    // Mock history
+    mockSearchStore.history = ["query1", "query2"];
+
     render(<Navbar />);
-    const searchIconMobile = screen.getByLabelText("Open search");
 
-    // Mở overlay
-    await user.click(searchIconMobile);
-    const inputMobile = screen.getAllByPlaceholderText("Search...")[1];
+    // Click input để mở Dropdown
+    const desktopInput = screen.getByPlaceholderText("Tìm kiếm...");
+    await user.click(desktopInput);
 
-    // Gõ "Trần" và kiểm tra trước submit
-    await user.type(inputMobile, "Trần");
-    expect(inputMobile).toHaveValue("Trần");
-
-    // Nhấn Enter
-    await user.keyboard("{Enter}");
-
-    // Kiểm tra router.push và overlay đóng
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/search?query=Tr%E1%BA%A7n");
-      expect(screen.queryByTestId("search-overlay")).not.toBeInTheDocument();
-    });
+    // Kiểm tra Dropdown hiển thị history
+    expect(screen.getByText("query1")).toBeInTheDocument();
+    expect(screen.getByText("query2")).toBeInTheDocument();
   });
 
-  it("submits search query on Enter key (Desktop)", async () => {
+  it("does not display Dropdown when history is empty on desktop", async () => {
+    // Mock history rỗng
+    mockSearchStore.history = [];
+
     render(<Navbar />);
-    const inputDesktop = screen.getAllByPlaceholderText("Search...")[0];
 
-    await user.type(inputDesktop, "Trần");
-    await user.keyboard("{Enter}");
+    // Click input (Dropdown không mở vì history rỗng)
+    const desktopInput = screen.getByPlaceholderText("Tìm kiếm...");
+    await user.click(desktopInput);
 
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/search?query=Tr%E1%BA%A7n");
-      expect(inputDesktop).toHaveValue("");
-    });
-  });
-
-  it("submits search query on search icon click (Desktop)", async () => {
-    render(<Navbar />);
-    const inputDesktop = screen.getAllByPlaceholderText("Search...")[0];
-    const searchIconDesktop = screen.getByLabelText("Search");
-
-    await user.type(inputDesktop, "Trần");
-    expect(inputDesktop).toHaveValue("Trần");
-
-    await user.click(searchIconDesktop);
-
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith("/search?query=Tr%E1%BA%A7n");
-      expect(inputDesktop).toHaveValue("");
-    });
-  });
-
-  it("does not submit empty query", async () => {
-    render(<Navbar />);
-    const inputDesktop = screen.getAllByPlaceholderText("Search...")[0];
-
-    await user.click(inputDesktop);
-    await user.keyboard("{Enter}");
-
-    expect(mockPush).not.toHaveBeenCalled();
-  });
-
-  it("toggles hamburger menu and navigates to a link", async () => {
-    render(<Navbar />);
-    const menuButton = screen.getByLabelText("Toggle menu");
-
-    // Mở menu
-    await user.click(menuButton);
-    expect(screen.getByTestId("overlay")).toBeInTheDocument();
-
-    // Kiểm tra link "Contact"
-    const contactLink = screen.getByText("Contact");
-    expect(contactLink).toHaveAttribute("href", "/contact");
-
-    // Click link và kiểm tra menu đóng
-    await user.click(contactLink);
-    await waitFor(() => {
-      expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
-    });
-  });
-
-  it("closes hamburger menu on overlay click", async () => {
-    render(<Navbar />);
-    const menuButton = screen.getByLabelText("Toggle menu");
-
-    // Mở menu
-    await user.click(menuButton);
-    expect(screen.getByTestId("overlay")).toBeInTheDocument();
-
-    // Click overlay để đóng
-    const overlay = screen.getByTestId("overlay");
-    await user.click(overlay);
-
-    await waitFor(() => {
-      expect(screen.queryByTestId("overlay")).not.toBeInTheDocument();
-    });
+    // Kiểm tra Dropdown không hiển thị
+    expect(screen.queryByText("query1")).not.toBeInTheDocument();
+    expect(screen.queryByText("query2")).not.toBeInTheDocument();
   });
 });

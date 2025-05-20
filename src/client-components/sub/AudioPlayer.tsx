@@ -1,37 +1,65 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
-import {
-  FaPlay,
-  FaPause,
-  FaWaveSquare,
-  FaForward,
-  FaBackward,
-} from "react-icons/fa";
+import { FaPlay, FaPause, FaForward, FaBackward } from "react-icons/fa";
+
+import { GiBigWave } from "react-icons/gi";
 import { motion } from "framer-motion";
 
 const playlist = [
-  { src: "/audio/audio-machine-path-to-freedom.mp3", title: "Path to Freedom" },
-  { src: "/audio/Descent-Into-Cerberon.mp3", title: "Descent Into Cerberon" },
-  { src: "/audio/epic-saga.mp3", title: "Epic Saga" },
-  { src: "/audio/guardians-at-the-gates.mp3", title: "Guardians at the Gates" },
-  { src: "/audio/heroic-song.mp3", title: "Heroic Song" },
-  { src: "/audio/lost-raiders.mp3", title: "Lost Raiders" },
-  { src: "/audio/Twelve-Titans-Music_Act-Of-Will.mp3", title: "Act of Will" },
-  { src: "/audio/Twelve-Titans-Music_Protect-Us-From-Evil.mp3", title: "Protect us from Evil" },
-  { src: "/audio/Victory-Epic-Remix.mp3", title: "Victory" },
-  { src: "/audio/The-Yellow-Heaven.mp3", title: "Yellow Heaven" },
-  { src: "/audio/main-theme-samanosuke.mp3", title: "Samanosuke Theme" },
-  { src: "/audio/we-rise.mp3", title: "We Rise" },
+  { src: "/audio/audio-machine-path-to-freedom.mp3" },
+  { src: "/audio/The-Yellow-Heaven.mp3" },
+  { src: "/audio/epic-saga.mp3" },
+  { src: "/audio/guardians-at-the-gates.mp3" },
+  { src: "/audio/heroic-song.mp3" },
+  { src: "/audio/lost-raiders.mp3" },
+  { src: "/audio/Twelve-Titans-Music_Act-Of-Will.mp3" },
+  { src: "/audio/Twelve-Titans-Music_Protect-Us-From-Evil.mp3" },
+  { src: "/audio/Victory-Epic-Remix.mp3" },
+  { src: "/audio/Descent-Into-Cerberon.mp3" },
+  { src: "/audio/main-theme-samanosuke.mp3" },
+  { src: "/audio/we-rise.mp3" },
 ];
 
 const AudioPlayer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentTrack, setCurrentTrack] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  // Format time to mm:ss
+  const formatTime = (seconds: number): string => {
+    if (isNaN(seconds)) return "00:00";
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // Update currentTime and duration
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    const audio = audioRef.current;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const setAudioDuration = () => setDuration(audio.duration);
+
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", setAudioDuration);
+
+    return () => {
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", setAudioDuration);
+    };
+  }, []);
+
+  // Handle track change and play/pause
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = playlist[currentTrack].src;
+      audioRef.current.load(); // Ensure new track loads
       if (isPlaying) {
         audioRef.current.play().catch(() => setIsPlaying(false));
       } else {
@@ -40,6 +68,7 @@ const AudioPlayer: React.FC = () => {
     }
   }, [currentTrack, isPlaying]);
 
+  // Auto-play on mount
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.play().catch(() => setIsPlaying(false));
@@ -71,6 +100,14 @@ const AudioPlayer: React.FC = () => {
 
   const handleEnded = () => {
     handleNext();
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      const newTime = Number(e.target.value);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
   };
 
   return (
@@ -107,7 +144,7 @@ const AudioPlayer: React.FC = () => {
           isPlaying ? { repeat: Infinity, duration: 1 } : { duration: 0.2 }
         }
       >
-        <FaWaveSquare
+        <GiBigWave
           size={16}
           className={
             isPlaying
@@ -116,6 +153,30 @@ const AudioPlayer: React.FC = () => {
           }
         />
       </motion.div>
+      <div className="flex items-center gap-2 flex-grow">
+        <input
+          type="range"
+          min="0"
+          max={duration || 100}
+          value={currentTime}
+          onChange={handleSeek}
+          className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer
+            [&::-webkit-slider-thumb]:appearance-none
+            [&::-webkit-slider-thumb]:w-3
+            [&::-webkit-slider-thumb]:h-3
+            [&::-webkit-slider-thumb]:bg-yellow-500
+            [&::-webkit-slider-thumb]:rounded-full
+            [&::-webkit-slider-thumb]:hover:bg-yellow-400
+            [&::-moz-range-thumb]:w-3
+            [&::-moz-range-thumb]:h-3
+            [&::-moz-range-thumb]:bg-yellow-500
+            [&::-moz-range-thumb]:rounded-full
+            [&::-moz-range-thumb]:hover:bg-yellow-400"
+        />
+        <span className="text-xs sm:text-sm text-gray-200 whitespace-nowrap">
+          {formatTime(currentTime)} / {formatTime(duration)}
+        </span>
+      </div>
       <audio ref={audioRef} onEnded={handleEnded} loop={false} />
     </div>
   );
