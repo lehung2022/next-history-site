@@ -1,3 +1,4 @@
+// src/app/layout.tsx
 import { Roboto } from "next/font/google";
 import Image from "next/image";
 import Navbar from "@/client-components/main/Navbar";
@@ -15,7 +16,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Chronicles of Valor",
+  title: "Chronicles of Heroes",
   description:
     "Explore historical timelines, famous generals, and significant events in history.",
   robots:
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
       : "https://yourdomain.com"
   ),
   openGraph: {
-    title: "Chronicles of Valor",
+    title: "Chronicles of Heroes",
     description:
       "Explore historical timelines, famous generals, and significant events in history.",
     images: ["/other_images/vietnam-plateau.jpg"],
@@ -38,11 +39,11 @@ export const metadata: Metadata = {
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000"
         : "https://yourdomain.com",
-    siteName: "Chronicles of Valor",
+    siteName: "Chronicles of Heroes",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chronicles of Valor",
+    title: "Chronicles of Heroes",
     description:
       "Explore historical timelines, famous generals, and significant events in history.",
     images: ["/other_images/vietnam-plateau.jpg"],

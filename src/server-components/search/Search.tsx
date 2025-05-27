@@ -293,14 +293,14 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                       }
                     >
                       <h3 className="text-xl font-semibold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center">
-                        Tướng Việt Nam
+                        Nhân vật lịch sử Việt Nam 
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-6 mx-2 xs:mx-4">
                         {filteredVietnamGenerals.map((general) => (
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/bio/${toSlug(general.name)}`}
+                            href={`/${toSlug(general.name)}`}
                             hoverColor="bg-yellow-500"
                             borderColor="yellow-300"
                           />
@@ -327,14 +327,14 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                       }
                     >
                       <h3 className="text-xl font-semibold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center">
-                        Tướng Nhật Bản
+                        Nhân vật lịch sử Nhật Bản
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-6 mx-2 xs:mx-4">
                         {filteredJapanGenerals.map((general) => (
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/bio/${toJapanSlug(general.name)}`}
+                            href={`/${toJapanSlug(general.name)}`}
                             hoverColor="bg-orange-400"
                             borderColor="orange-400"
                           />
@@ -361,14 +361,14 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                       }
                     >
                       <h3 className="text-xl font-semibold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center">
-                        Tướng Trung Quốc
+                        Nhân vật lịch sử Trung Quốc
                       </h3>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 xs:gap-6 mx-2 xs:mx-4">
                         {filteredChinaGenerals.map((general) => (
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/bio/${toChinaSlug(general.name)}`}
+                            href={`/${toChinaSlug(general.name)}`}
                             hoverColor="bg-red-900"
                             borderColor="red-900"
                           />

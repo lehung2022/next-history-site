@@ -3,7 +3,7 @@ import ChinaTimelines from "@/server-components/timelines/ChinaTimelines";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "China Timelines | Chronicles of Valor",
+  title: "China Timelines | Chronicles of Heroes",
   description:
     "Explore historical timelines, famous generals, and significant events in history.",
 };

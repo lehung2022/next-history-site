@@ -1,3 +1,4 @@
+// src/lib/generals.ts
 import { getDownloadURL, listAll, ref } from "firebase/storage";
 import { storage } from "@/lib/firebaseConfig";
 import { General, toSlug } from "@/types/vietGenerals";

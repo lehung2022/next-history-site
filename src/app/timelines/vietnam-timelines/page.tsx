@@ -3,7 +3,7 @@ import VietnamTimelines from "@/server-components/timelines/VietnamTimelines";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vietnam Timelines | Chronicles of Valor",
+  title: "Vietnam Timelines | Chronicles of Heroes",
   description:
     "Explore historical timelines, famous generals, and significant events in history.",
 };

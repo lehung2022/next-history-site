@@ -1,3 +1,4 @@
+// src/server-components/generals/VietnameseGenerals.tsx
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -165,7 +166,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
         </Link>
         <div className="px-2 xs:px-4 w-full max-w-4xl">
           <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
-            Tướng Quân Việt Nam
+            Nhân vật lịch sử Việt Nam 
           </div>
           <p className="text-center text-base xs:text-lg text-red-400">
             Không tải được danh sách tướng. Vui lòng kiểm tra Firebase Storage.
@@ -185,7 +186,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
       </Link>
       <div className="px-2 xs:px-4 w-full max-w-4xl">
         <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
-          Tướng Quân Việt Nam
+          Nhân vật lịch sử Việt Nam 
         </div>
         {generals.length === 0 ? (
           <p className="text-center text-base xs:text-lg">
@@ -212,7 +213,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               {generals.map((general: General) => (
                 <Link
                   key={general.id}
-                  href={`/tuong-quan-viet-nam/bio/${toSlug(general.name)}`}
+                  href={`/tuong-quan-viet-nam/${toSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-yellow-500 group-hover:border-yellow-300 active:bg-yellow-500 active:border-yellow-300 transition-all duration-300">

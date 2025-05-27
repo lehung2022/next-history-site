@@ -210,7 +210,7 @@ const ChineseGenerals: FC<ChineseGeneralsProps> = async ({ searchParams }) => {
               {generals.map((general: ChinaGeneral) => (
                 <Link
                   key={general.id}
-                  href={`/zung-gwok-zeong-gwan/bio/${toChinaSlug(general.name)}`}
+                  href={`/zung-gwok-zeong-gwan/${toChinaSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-red-900 group-hover:border-red-900 active:bg-red-900 active:border-red-900 transition-all duration-300">

@@ -2,7 +2,7 @@ import ChinaGeneralBio from "@/server-components/generals-bio/ChinaGeneralBio";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chinese General Biography | Chronicles of Valor",
+  title: "Chinese General Biography | Chronicles of Heroes",
   description: "Biography of a Chinese general from the feudal era",
 };
 

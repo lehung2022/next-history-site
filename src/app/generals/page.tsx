@@ -3,7 +3,7 @@ import GeneralPage from "@/client-components/main/GeneralPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Generals | Chronicles of Valor",
+  title: "Generals | Chronicles of Heroes",
   description: "Explore the greatest generals of each country",
 };
 

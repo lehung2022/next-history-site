@@ -164,7 +164,7 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
         </Link>
         <div className="px-2 xs:px-4 w-full max-w-4xl">
           <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
-            Tướng Quân Nhật Bản
+            Nhân vật lịch sử Nhật Bản 
           </div>
           <p className="text-center text-base xs:text-lg text-red-400">
             Không tải được danh sách tướng. Vui lòng kiểm tra Firebase Storage.
@@ -184,7 +184,7 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
       </Link>
       <div className="px-2 xs:px-4 w-full max-w-4xl">
         <div className="text-2xl font-bold my-2 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
-          Tướng Quân Nhật Bản
+          Nhân vật lịch sử Nhật Bản 
         </div>
         {generals.length === 0 ? (
           <p className="text-center text-base xs:text-lg">
@@ -211,7 +211,7 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
               {generals.map((general: JapanGeneral) => (
                 <Link
                   key={general.id}
-                  href={`/japan-shogun/bio/${toJapanSlug(general.name)}`}
+                  href={`/japan-shogun/${toJapanSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-orange-400 group-hover:border-orange-400 active:bg-orange-400 active:border-orange-400 transition-all duration-300">

@@ -3,7 +3,7 @@ import ChinaDynasty from "@/server-components/dynasties/ChinaDynasty";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "China Dynasties | Chronicles of Valor",
+  title: "China Dynasties | Chronicles of Heroes",
   description: "Explore the greatest generals of each country",
 };
 

@@ -1,10 +1,45 @@
+// src/client-components/main/Homepage.tsx
+"use client";
+
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Introduction from "./Introduction";
+import LoadingSpinner from "@/client-components/sub/LoadingSpinner";
+import { useLoadingStore } from "@/store/loading";
 
 const Homepage = () => {
+  const { showLoading, hideLoading } = useLoadingStore();
+
+  useEffect(() => {
+    showLoading();
+    const imageSources = [
+      "/other_images/lich_su_viet_nam.jpg",
+      "/other_images/lam_son_vs_minh_02.jpg",
+      "/other_images/Timeline-of-the-Far-Future-Snippet.jpg",
+    ];
+
+    const imagePromises = imageSources.map((src) => {
+      return new Promise<void>((resolve) => {
+        const img = document.createElement("img") as HTMLImageElement;
+        img.src = src;
+        img.onload = () => resolve();
+        img.onerror = () => resolve(); // Xử lý lỗi để không treo loading
+      });
+    });
+
+    Promise.all(imagePromises).then(() => {
+      hideLoading();
+    });
+
+    return () => {
+      hideLoading(); // Cleanup khi component unmount
+    };
+  }, [showLoading, hideLoading]);
+
   return (
     <div className="flex flex-col items-center text-white">
+      <LoadingSpinner />
       <div className="px-4">
         <div className="text-2xl font-bold my-4 mt-6 border-2 border-white bg-black/50 rounded-lg px-4 py-2 w-fit mx-auto text-center whitespace-nowrap">
           Chọn cánh cổng của bạn
@@ -39,7 +74,7 @@ const Homepage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-black group-active:bg-black group-hover:text-white group-active:text-white transition-all duration-300">
-            Tướng quân 
+            Tướng quân
           </p>
         </Link>
         <Link href="/timelines" className="group rounded-lg">
@@ -54,7 +89,7 @@ const Homepage = () => {
             />
           </div>
           <p className="mt-2 text-xl text-center border-2 border-white bg-black/50 rounded-md px-2 py-1 group-hover:bg-emerald-700 group-active:bg-emerald-700 group-hover:text-black group-active:text-black transition-all duration-300">
-            Dòng thời gian 
+            Dòng thời gian
           </p>
         </Link>
       </div>

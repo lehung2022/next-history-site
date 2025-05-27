@@ -4,7 +4,7 @@ import JapaneseGenerals from "@/server-components/generals/JapaneseGenerals";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Japanese Generals | Chronicles of Valor",
+  title: "Japanese Generals | Chronicles of Heroes",
   description: "Explore the greatest generals of Japan",
 };
 

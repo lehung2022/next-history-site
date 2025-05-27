@@ -3,7 +3,7 @@ import JapanDynasty from "@/server-components/dynasties/JapanDynasty";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Japan Dynasties | Chronicles of Valor",
+  title: "Japan Dynasties | Chronicles of Heroes",
   description: "Explore the greatest generals of each country",
 };
 

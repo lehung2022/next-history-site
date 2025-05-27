@@ -4,7 +4,7 @@ import ChineseGenerals from "@/server-components/generals/ChineseGenerals";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chinese Generals | Chronicles of Valor",
+  title: "Chinese Generals | Chronicles of Heroes",
   description: "Explore the greatest generals of China",
 };
 

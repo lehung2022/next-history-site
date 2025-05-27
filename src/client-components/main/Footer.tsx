@@ -37,8 +37,8 @@ const Footer = () => {
       Vietnamese: `©${year} biên niên sử anh hùng. Mọi quyền được bảo lưu.`,
       Japanese: `©${year} ヴァロルのクロニクル。全ての権利を保有。`,
       Cantonese: `©${year} 勇氣編年史。保留所有權利。`,
-      English: `©${year} Chronicles of Valor. All rights reserved.`,
-    }[clientLanguage] || `©${year} Chronicles of Valor. All rights reserved.`;
+      English: `©${year} Chronicles of Heroes. All rights reserved.`,
+    }[clientLanguage] || `©${year} Chronicles of Heroes. All rights reserved.`;
 
   const formattedDate = currentTime
     ? currentTime.toLocaleDateString("en-US", { timeZone: "Asia/Ho_Chi_Minh" })

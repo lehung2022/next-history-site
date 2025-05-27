@@ -4,7 +4,7 @@ import VietnameseGenerals from "@/server-components/generals/VietnameseGenerals"
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vietnamese Generals | Chronicles of Valor",
+  title: "Vietnamese Generals | Chronicles of Heroes",
   description: "Explore the greatest generals of Vietnam",
 };
 

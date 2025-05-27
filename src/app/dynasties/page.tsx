@@ -3,7 +3,7 @@ import DynastyPage from "@/client-components/main/DynastyPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Dynasties | Chronicles of Valor",
+  title: "Dynasties | Chronicles of Heroes",
   description:
     "Explore ancient dynasties",
 };

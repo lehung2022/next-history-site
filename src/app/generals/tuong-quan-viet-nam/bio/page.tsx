@@ -2,7 +2,7 @@ import VietGeneralBio from "@/server-components/generals-bio/VietGeneralBio";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vietnamese General Biography | Chronicles of Valor",
+  title: "Vietnamese General Biography | Chronicles of Heroes",
   description: "Biography of a Vietnamese general from the feudal era",
 };
 

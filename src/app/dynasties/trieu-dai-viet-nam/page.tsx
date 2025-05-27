@@ -3,7 +3,7 @@ import VietnamDynasty from "@/server-components/dynasties/VietnamDynasty";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Vietnam Dynasties | Chronicles of Valor",
+  title: "Vietnam Dynasties | Chronicles of Heroes",
   description: "Explore the greatest generals of each country",
 };
 
