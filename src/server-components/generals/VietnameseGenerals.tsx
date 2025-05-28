@@ -213,7 +213,7 @@ const VietnameseGenerals: FC<VietnameseGeneralsProps> = async ({
               {generals.map((general: General) => (
                 <Link
                   key={general.id}
-                  href={`/tuong-quan-viet-nam/${toSlug(general.name)}`}
+                  href={`/generals/tuong-quan-viet-nam/${toSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-yellow-500 group-hover:border-yellow-300 active:bg-yellow-500 active:border-yellow-300 transition-all duration-300">

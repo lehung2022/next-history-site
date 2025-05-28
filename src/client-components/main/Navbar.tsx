@@ -1,3 +1,4 @@
+// src/client-components/main/Navbar.tsx
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
@@ -5,6 +6,7 @@ import { FaBars, FaSearch, FaTimes } from "react-icons/fa";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useSearchStore } from "@/store/search";
+import { useLoadingStore } from "@/store/loading"; // Thêm import
 
 const MotionDiv = dynamic(
   () => import("framer-motion").then((mod) => mod.motion.div),
@@ -35,11 +37,21 @@ const Navbar = () => {
   const [isSearching, setIsSearching] = useState(false);
   const { query, setQuery, history, addQuery, clearHistory, removeQuery } =
     useSearchStore();
+  const { showLoading, hideLoading } = useLoadingStore(); // Thêm hooks
   const router = useRouter();
   const desktopInputRef = useRef<HTMLInputElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
   const desktopInputWrapperRef = useRef<HTMLDivElement>(null);
   const mobileInputWrapperRef = useRef<HTMLDivElement>(null);
+
+  // Đồng bộ isSearching với isLoading
+  useEffect(() => {
+    if (isSearching) {
+      showLoading();
+    } else {
+      hideLoading();
+    }
+  }, [isSearching, showLoading, hideLoading]);
 
   // Handle input focus for desktop and mobile
   useEffect(() => {
@@ -131,7 +143,7 @@ const Navbar = () => {
                 href="/"
                 className="text-xl md:text-2xl font-bold whitespace-nowrap"
               >
-                Chronicles of Valor
+                Biên niên sử các anh hùng
               </Link>
             </div>
             <div
@@ -151,18 +163,12 @@ const Navbar = () => {
                 }}
                 className={desktopInputClassName}
               />
-              {isSearching ? (
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 animate-spin">
-                  ⏳
-                </div>
-              ) : (
-                <FaSearch
-                  size={16}
-                  aria-label="Search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                  onClick={handleSearchSubmit}
-                />
-              )}
+              <FaSearch
+                size={16}
+                aria-label="Search"
+                className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                onClick={handleSearchSubmit}
+              />
               <AnimatePresence mode="wait">
                 {isHistoryOpen && history.length > 0 && (
                   <MotionDiv
@@ -315,18 +321,12 @@ const Navbar = () => {
                   }}
                   className={mobileInputClassName}
                 />
-                {isSearching ? (
-                  <div className="absolute right-2 top-1/2 -translate-y-1/2 animate-spin">
-                    ⏳
-                  </div>
-                ) : (
-                  <FaSearch
-                    size={16}
-                    aria-label="Search"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
-                    onClick={handleSearchSubmit}
-                  />
-                )}
+                <FaSearch
+                  size={16}
+                  aria-label="Search"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer"
+                  onClick={handleSearchSubmit}
+                />
                 <AnimatePresence mode="wait">
                   {isHistoryOpen && history.length > 0 && (
                     <MotionDiv

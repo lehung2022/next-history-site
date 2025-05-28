@@ -1,3 +1,4 @@
+// src/lib/cache.ts
 import { unstable_cache } from "next/cache";
 
 type GeneralFetchFn<T> = (
@@ -5,6 +6,8 @@ type GeneralFetchFn<T> = (
   limit: number,
   getAll?: boolean
 ) => Promise<{ generals: T[]; totalPages: number }>;
+
+type ImageFetchFn = () => Promise<string[]>;
 
 export function cacheGenerals<T>(
   fetchFn: GeneralFetchFn<T>,
@@ -29,5 +32,19 @@ export function cacheGenerals<T>(
     },
     cacheKey,
     { revalidate: 60 }
+  );
+}
+
+export function cacheImages(fetchFn: ImageFetchFn, prefix: string) {
+  const cacheKey = [prefix];
+  return unstable_cache(
+    async () => {
+      console.log(`cache.ts - Cache miss for images ${prefix}, key:`, cacheKey);
+      const imageUrls = await fetchFn();
+      console.log(`cache.ts - Cached ${imageUrls.length} images for ${prefix}`);
+      return imageUrls;
+    },
+    cacheKey,
+    { revalidate: 60 } // Cache hình ảnh 
   );
 }

@@ -1,29 +1,50 @@
 // src/client-components/main/ErrorBoundary.tsx
 "use client";
-import React, { useState } from "react";
 
-type ErrorBoundaryProps = { children: React.ReactNode };
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
+import { useCallback } from "react";
+
+type ErrorBoundaryProps = {
+  children: React.ReactNode;
+};
+
+const ErrorFallback = ({
+  error,
+  resetErrorBoundary,
+}: {
+  error: Error;
+  resetErrorBoundary: () => void;
+}) => {
+  const handleRetry = useCallback(() => {
+    resetErrorBoundary();
+    window.location.reload();
+  }, [resetErrorBoundary]);
+
+  return (
+    <div className="p-4 text-white bg-red-800/50">
+      <h2>Something went wrong</h2>
+      <p>{error.message}</p>
+      <button
+        onClick={handleRetry}
+        className="mt-2 px-4 py-2 bg-blue-600 rounded"
+      >
+        Retry
+      </button>
+    </div>
+  );
+};
 
 const ErrorBoundary = ({ children }: ErrorBoundaryProps) => {
-  const [error, setError] = useState<Error | null>(null);
-
-  try {
-    return <>{children}</>;
-  } catch (err) {
-    setError(err as Error);
-    return (
-      <div className="p-4 text-white bg-red-800/50">
-        <h2>Something went wrong</h2>
-        <p>{error?.message}</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-blue-600 rounded"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  return (
+    <ReactErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onError={(error, info) => {
+        console.error("ErrorBoundary caught an error:", error, info);
+      }}
+    >
+      {children}
+    </ReactErrorBoundary>
+  );
 };
 
 export default ErrorBoundary;

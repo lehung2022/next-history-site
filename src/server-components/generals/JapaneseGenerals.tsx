@@ -1,3 +1,4 @@
+// src/server-components/generals/JapaneseGenerals.tsx
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -211,7 +212,7 @@ const JapaneseGenerals: FC<JapaneseGeneralsProps> = async ({
               {generals.map((general: JapanGeneral) => (
                 <Link
                   key={general.id}
-                  href={`/japan-shogun/${toJapanSlug(general.name)}`}
+                  href={`/generals/japan-shogun/${toJapanSlug(general.name)}`}
                   className="group flex flex-col"
                 >
                   <div className="border-2 border-white rounded-lg p-3 xs:p-4 bg-black/50 group-hover:bg-orange-400 group-hover:border-orange-400 active:bg-orange-400 active:border-orange-400 transition-all duration-300">

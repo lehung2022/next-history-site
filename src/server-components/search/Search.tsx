@@ -1,16 +1,13 @@
+// src/server-components/search/Search.tsx
 import { FC, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { QueryClient } from "@tanstack/react-query";
 import { cacheGenerals } from "@/lib/cache";
-// For searching vietnamese generals
-import { getGenerals } from "@/lib/generals";
+// For searching vietnamese, japanese, and chinese generals
+import { getGenerals, getJapanGenerals, getChinaGenerals } from "@/lib/generals";
 import { General, toSlug } from "@/types/vietGenerals";
-// For searching japanese generals
-import { getJapanGenerals } from "@/lib/generals";
 import { JapanGeneral, toJapanSlug } from "@/types/japanGenerals";
-// For searching chinese generals
-import { getChinaGenerals } from "@/lib/generals";
 import { ChinaGeneral, toChinaSlug } from "@/types/chinaGenerals";
 
 type SearchProps = {
@@ -300,7 +297,7 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/${toSlug(general.name)}`}
+                            href={`generals/tuong-quan-viet-nam/${toSlug(general.name)}`}
                             hoverColor="bg-yellow-500"
                             borderColor="yellow-300"
                           />
@@ -334,7 +331,7 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/${toJapanSlug(general.name)}`}
+                            href={`/generals/japan-shogun/${toJapanSlug(general.name)}`}
                             hoverColor="bg-orange-400"
                             borderColor="orange-400"
                           />
@@ -368,7 +365,7 @@ const Search: FC<SearchProps> = async ({ searchParams }) => {
                           <GeneralCard
                             key={general.id}
                             general={general}
-                            href={`/${toChinaSlug(general.name)}`}
+                            href={`/generals/zung-gwok-zeong-gwan/${toChinaSlug(general.name)}`}
                             hoverColor="bg-red-900"
                             borderColor="red-900"
                           />

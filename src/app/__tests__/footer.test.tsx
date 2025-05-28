@@ -24,7 +24,7 @@ describe("Footer", () => {
 
   it("displays copyright and contact link", () => {
     render(<Footer />);
-    expect(screen.getByText(/©\d{4} Chronicles of Valor/)).toBeInTheDocument();
+    expect(screen.getByText(/©\d{4} Biên niên sử các anh hùng/)).toBeInTheDocument();
     expect(screen.getByText("Contact Me")).toBeInTheDocument();
   });
 });
